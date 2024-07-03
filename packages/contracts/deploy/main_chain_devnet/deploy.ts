@@ -391,7 +391,6 @@ async function deployLoyaltyBridge(accounts: IAccount, deployment: Deployments) 
     deployment.addContract(contractName, contract.address, contract);
     console.log(`Deployed ${contractName} to ${contract.address}`);
 
-    const chainId = (await hre.ethers.provider.getNetwork()).chainId;
     {
         const tokenContract = (await deployment.getContract("LoyaltyToken")) as LoyaltyToken;
         const tokenId = ContractUtils.getTokenId(await tokenContract.name(), await tokenContract.symbol());
@@ -400,20 +399,7 @@ async function deployLoyaltyBridge(accounts: IAccount, deployment: Deployments) 
         await tx.wait();
 
         const assetAmount = Amount.make(8_000_000_000, 18).value;
-        const nonce = await tokenContract.nonceOf(accounts.owner.address);
-        const expiry = ContractUtils.getTimeStamp() + 3600;
-        const message = ContractUtils.getTransferMessage(
-            chainId,
-            tokenContract.address,
-            accounts.owner.address,
-            contract.address,
-            assetAmount,
-            nonce,
-            expiry
-        );
-        const signature = await ContractUtils.signMessage(accounts.owner, message);
-        const tx1 = await contract.connect(accounts.owner).depositLiquidity(tokenId, assetAmount, expiry, signature);
-        console.log(`Deposit liquidity token to SideChainBridge (tx: ${tx1.hash})...`);
+        const tx1 = await tokenContract.connect(accounts.owner).transfer(contract.address, assetAmount);
         await tx1.wait();
     }
 }
@@ -441,7 +427,6 @@ async function deployMainChainBridge(accounts: IAccount, deployment: Deployments
     deployment.addContract(contractName, contract.address, contract);
     console.log(`Deployed ${contractName} to ${contract.address}`);
 
-    const chainId = (await hre.ethers.provider.getNetwork()).chainId;
     {
         const tokenContract = (await deployment.getContract("LoyaltyToken")) as LoyaltyToken;
         const tokenId = ContractUtils.getTokenId(await tokenContract.name(), await tokenContract.symbol());
@@ -450,20 +435,7 @@ async function deployMainChainBridge(accounts: IAccount, deployment: Deployments
         await tx.wait();
 
         const assetAmount = Amount.make(100_000_000, 18).value;
-        const nonce = await tokenContract.nonceOf(accounts.owner.address);
-        const expiry = ContractUtils.getTimeStamp() + 3600;
-        const message = ContractUtils.getTransferMessage(
-            chainId,
-            tokenContract.address,
-            accounts.owner.address,
-            contract.address,
-            assetAmount,
-            nonce,
-            expiry
-        );
-        const signature = await ContractUtils.signMessage(accounts.owner, message);
-        const tx1 = await contract.connect(accounts.owner).depositLiquidity(tokenId, assetAmount, expiry, signature);
-        console.log(`Deposit liquidity token to SideChainBridge (tx: ${tx1.hash})...`);
+        const tx1 = await tokenContract.connect(accounts.owner).transfer(contract.address, assetAmount);
         await tx1.wait();
     }
 }
