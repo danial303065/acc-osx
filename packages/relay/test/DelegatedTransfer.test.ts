@@ -103,7 +103,7 @@ describe("Test of delegated transfer", function () {
         const amount = Amount.make(500, 18).value;
         const nonce = await contractManager.mainTokenContract.nonceOf(source.address);
         const expiry = ContractUtils.getTimeStamp() * 600;
-        const message = await ContractUtils.getTransferMessage(
+        const message = ContractUtils.getTransferMessage(
             contractManager.mainChainId,
             contractManager.mainTokenContract.address,
             source.address,
@@ -125,8 +125,11 @@ describe("Test of delegated transfer", function () {
         expect(response.data.data).to.not.equal(undefined);
         expect(response.data.data.txHash).to.match(/^0x[A-Fa-f0-9]{64}$/i);
 
+        const protocolFee = await contractManager.mainTokenContract.getProtocolFee();
         expect(await contractManager.mainTokenContract.balanceOf(source.address)).to.deep.equal(balance0.sub(amount));
-        expect(await contractManager.mainTokenContract.balanceOf(target.address)).to.deep.equal(balance1.add(amount));
+        expect(await contractManager.mainTokenContract.balanceOf(target.address)).to.deep.equal(
+            balance1.add(amount.sub(protocolFee))
+        );
     });
 
     it("delegated transfer of side chain token", async () => {
@@ -137,7 +140,7 @@ describe("Test of delegated transfer", function () {
         const amount = Amount.make(500, 18).value;
         const nonce = await contractManager.sideTokenContract.nonceOf(source.address);
         const expiry = ContractUtils.getTimeStamp() * 600;
-        const message = await ContractUtils.getTransferMessage(
+        const message = ContractUtils.getTransferMessage(
             contractManager.sideChainId,
             contractManager.sideTokenContract.address,
             source.address,

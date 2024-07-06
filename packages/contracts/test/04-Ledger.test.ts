@@ -2537,8 +2537,8 @@ describe("Test for Ledger", () => {
                 });
             const newTokenBalance0 = await ledgerContract.tokenBalanceOf(deployments.accounts.users[0].address);
             const newTokenBalance1 = await ledgerContract.tokenBalanceOf(deployments.accounts.users[1].address);
-            expect(newTokenBalance0).to.deep.equal(oldTokenBalance0.sub(transferAmount.add(fee)));
-            expect(newTokenBalance1).to.deep.equal(oldTokenBalance1.add(transferAmount));
+            expect(newTokenBalance0).to.deep.equal(oldTokenBalance0.sub(transferAmount));
+            expect(newTokenBalance1).to.deep.equal(oldTokenBalance1.add(transferAmount.sub(fee)));
         });
     });
 

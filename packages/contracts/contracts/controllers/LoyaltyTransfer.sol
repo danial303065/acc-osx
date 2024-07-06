@@ -61,10 +61,11 @@ contract LoyaltyTransfer is LoyaltyTransferStorage, Initializable, OwnableUpgrad
         );
         require(ECDSA.recover(ECDSA.toEthSignedMessageHash(dataHash), _signature) == _from, "1501");
         require(_expiry > block.timestamp, "1506");
-        require(ledgerContract.tokenBalanceOf(_from) >= _amount + protocolFee, "1511");
+        require(ledgerContract.tokenBalanceOf(_from) >= _amount, "1511");
         require(_amount % 1 gwei == 0, "1030");
+        require(_amount > protocolFee, "1716");
 
-        ledgerContract.transferToken(_from, _to, _amount);
+        ledgerContract.transferToken(_from, _to, _amount - protocolFee);
         ledgerContract.transferToken(_from, ledgerContract.getProtocolFeeAccount(), protocolFee);
         ledgerContract.increaseNonce(_from);
 

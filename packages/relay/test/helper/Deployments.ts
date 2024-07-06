@@ -264,7 +264,9 @@ async function deployToken(accounts: IAccount, deployment: Deployments) {
 
     await hre.changeNetwork(deployment.config.contracts.sideChain.network);
     const factory = await hre.ethers.getContractFactory("TestLYT");
-    const contract = (await factory.connect(accounts.deployer).deploy(accounts.owner.address)) as TestLYT;
+    const contract = (await factory
+        .connect(accounts.deployer)
+        .deploy(accounts.owner.address, accounts.protocolFee.address)) as TestLYT;
     await contract.deployed();
     await contract.deployTransaction.wait();
 
@@ -816,7 +818,9 @@ async function deployMainChainToken(accounts: IAccount, deployment: Deployments)
 
     await hre.changeNetwork(deployment.config.contracts.mainChain.network);
     const factory = await hre.ethers.getContractFactory("TestLYT");
-    const contract = (await factory.connect(accounts.deployer).deploy(accounts.owner.address)) as TestLYT;
+    const contract = (await factory
+        .connect(accounts.deployer)
+        .deploy(accounts.owner.address, accounts.protocolFee.address)) as TestLYT;
     await contract.deployed();
     await contract.deployTransaction.wait();
 

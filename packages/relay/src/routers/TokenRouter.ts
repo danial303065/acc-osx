@@ -244,7 +244,7 @@ export class TokenRouter {
                 return res.status(200).json(ResponseMessage.getErrorMessage("1501"));
             const tx = await this.contractManager.mainTokenContract
                 .connect(signerItem.signer)
-                .delegatedTransfer(from, to, amount, expiry, signature);
+                .delegatedTransferWithFee(from, to, amount, expiry, signature);
             this.metrics.add("success", 1);
             return res.status(200).json(this.makeResponseData(0, { from, to, amount, txHash: tx.hash }));
         } catch (error: any) {
@@ -289,7 +289,7 @@ export class TokenRouter {
                 return res.status(200).json(ResponseMessage.getErrorMessage("1501"));
             const tx = await this.contractManager.sideTokenContract
                 .connect(signerItem.signer)
-                .delegatedTransfer(from, to, amount, expiry, signature);
+                .delegatedTransferWithFee(from, to, amount, expiry, signature);
             this.metrics.add("success", 1);
             return res.status(200).json(this.makeResponseData(0, { from, to, amount, txHash: tx.hash }));
         } catch (error: any) {
@@ -354,8 +354,13 @@ export class TokenRouter {
                         name: "main-chain",
                         chainId: this.contractManager.mainChainId,
                         ensAddress: AddressZero,
-                        transferFee: "0",
-                        bridgeFee: (
+                        chainTransferFee: (await this.contractManager.mainTokenContract.getProtocolFee()).toString(),
+                        chainBridgeFee: (
+                            await this.contractManager.mainChainBridgeContract.getProtocolFee(
+                                this.contractManager.mainTokenId
+                            )
+                        ).toString(),
+                        loyaltyBridgeFee: (
                             await this.contractManager.mainLoyaltyBridgeContract.getProtocolFee(
                                 this.contractManager.mainTokenId
                             )
@@ -392,19 +397,33 @@ export class TokenRouter {
                         name: "side-chain",
                         chainId: this.contractManager.sideChainId,
                         ensAddress: AddressZero,
-                        transferFee: (
-                            await this.contractManager.sideLoyaltyTransferContract.getProtocolFee()
-                        ).toString(),
-                        bridgeFee: (
-                            await this.contractManager.sideLoyaltyBridgeContract.getProtocolFee(
-                                this.contractManager.sideTokenId
-                            )
-                        ).toString(),
                     },
+                    chainTransferFee: (await this.contractManager.sideTokenContract.getProtocolFee()).toString(),
+                    chainBridgeFee: (
+                        await this.contractManager.sideChainBridgeContract.getProtocolFee(
+                            this.contractManager.sideTokenId
+                        )
+                    ).toString(),
+                    loyaltyTransferFee: (
+                        await this.contractManager.sideLoyaltyTransferContract.getProtocolFee()
+                    ).toString(),
+                    loyaltyBridgeFee: (
+                        await this.contractManager.sideLoyaltyBridgeContract.getProtocolFee(
+                            this.contractManager.sideTokenId
+                        )
+                    ).toString(),
                     contract: {
                         token: this.contractManager.sideTokenContract.address,
-                        chainBridge: this.contractManager.sideChainBridgeContract.address,
+                        phoneLink: this.contractManager.sidePhoneLinkerContract.address,
+                        currencyRate: this.contractManager.sideCurrencyRateContract.address,
+                        loyaltyProvider: this.contractManager.sideLoyaltyProviderContract.address,
+                        loyaltyConsumer: this.contractManager.sideLoyaltyConsumerContract.address,
+                        loyaltyTransfer: this.contractManager.sideLoyaltyTransferContract.address,
+                        loyaltyExchanger: this.contractManager.sideLoyaltyExchangerContract.address,
                         loyaltyBridge: this.contractManager.sideLoyaltyBridgeContract.address,
+                        shop: this.contractManager.sideShopContract.address,
+                        ledger: this.contractManager.sideLedgerContract.address,
+                        chainBridge: this.contractManager.sideChainBridgeContract.address,
                     },
                 })
             );

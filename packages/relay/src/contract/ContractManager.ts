@@ -17,6 +17,7 @@ import { logger } from "../common/Logger";
 
 import { ethers } from "ethers";
 import * as hre from "hardhat";
+// tslint:disable-next-line:no-submodule-imports
 import { HttpNetworkConfig } from "hardhat/src/types/config";
 import { ContractUtils } from "../utils/ContractUtils";
 

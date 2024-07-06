@@ -128,7 +128,7 @@ describe("Test of LoyaltyTransfer", function () {
         const amount = Amount.make(500, 18).value;
         const nonce = await contractManager.sideLedgerContract.nonceOf(source.address);
         const expiry = ContractUtils.getTimeStamp() * 600;
-        const message = await ContractUtils.getTransferMessage(
+        const message = ContractUtils.getTransferMessage(
             contractManager.sideChainId,
             contractManager.sideLoyaltyTransferContract.address,
             source.address,
@@ -151,10 +151,10 @@ describe("Test of LoyaltyTransfer", function () {
         expect(response.data.data.txHash).to.match(/^0x[A-Fa-f0-9]{64}$/i);
 
         expect(await contractManager.sideLedgerContract.tokenBalanceOf(source.address)).to.deep.equal(
-            balance0.sub(amount).sub(fee)
+            balance0.sub(amount)
         );
         expect(await contractManager.sideLedgerContract.tokenBalanceOf(target.address)).to.deep.equal(
-            balance1.add(amount)
+            balance1.add(amount.sub(fee))
         );
     });
 });
