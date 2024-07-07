@@ -15,6 +15,7 @@ import { AddressZero } from "@ethersproject/constants";
 import { BigNumber, ethers } from "ethers";
 import express from "express";
 import { body, param, validationResult } from "express-validator";
+import { BOACoin } from "../common/Amount";
 
 export class TokenRouter {
     private web_service: WebService;
@@ -142,6 +143,11 @@ export class TokenRouter {
         this.app.get("/v1/chain/main/info", [], this.chain_main_info.bind(this));
         this.app.get("/v1/chain/side/info", [], this.chain_side_info.bind(this));
         this.app.get("/v1/system/info", [], this.system_info.bind(this));
+        this.app.get(
+            "/v1/account/balance/:account",
+            [param("account").exists().trim().isEthereumAddress()],
+            this.account_balance.bind(this)
+        );
     }
 
     private async token_main_nonce(req: express.Request, res: express.Response) {
@@ -360,6 +366,7 @@ export class TokenRouter {
                                 this.contractManager.mainTokenId
                             )
                         ).toString(),
+                        loyaltyTransferFee: BigNumber.from(0).toString(),
                         loyaltyBridgeFee: (
                             await this.contractManager.mainLoyaltyBridgeContract.getProtocolFee(
                                 this.contractManager.mainTokenId
@@ -397,21 +404,21 @@ export class TokenRouter {
                         name: "side-chain",
                         chainId: this.contractManager.sideChainId,
                         ensAddress: AddressZero,
+                        chainTransferFee: (await this.contractManager.sideTokenContract.getProtocolFee()).toString(),
+                        chainBridgeFee: (
+                            await this.contractManager.sideChainBridgeContract.getProtocolFee(
+                                this.contractManager.sideTokenId
+                            )
+                        ).toString(),
+                        loyaltyTransferFee: (
+                            await this.contractManager.sideLoyaltyTransferContract.getProtocolFee()
+                        ).toString(),
+                        loyaltyBridgeFee: (
+                            await this.contractManager.sideLoyaltyBridgeContract.getProtocolFee(
+                                this.contractManager.sideTokenId
+                            )
+                        ).toString(),
                     },
-                    chainTransferFee: (await this.contractManager.sideTokenContract.getProtocolFee()).toString(),
-                    chainBridgeFee: (
-                        await this.contractManager.sideChainBridgeContract.getProtocolFee(
-                            this.contractManager.sideTokenId
-                        )
-                    ).toString(),
-                    loyaltyTransferFee: (
-                        await this.contractManager.sideLoyaltyTransferContract.getProtocolFee()
-                    ).toString(),
-                    loyaltyBridgeFee: (
-                        await this.contractManager.sideLoyaltyBridgeContract.getProtocolFee(
-                            this.contractManager.sideTokenId
-                        )
-                    ).toString(),
                     contract: {
                         token: this.contractManager.sideTokenContract.address,
                         phoneLink: this.contractManager.sidePhoneLinkerContract.address,
@@ -465,6 +472,74 @@ export class TokenRouter {
             logger.error(`GET /v1/system/info : ${msg.error.message}`);
             this.metrics.add("failure", 1);
             return res.status(200).json(msg);
+        }
+    }
+
+    private async account_balance(req: express.Request, res: express.Response) {
+        logger.http(`GET /v1/account/balance/:account ${req.ip}:${JSON.stringify(req.params)}`);
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(200).json(ResponseMessage.getErrorMessage("2001", { validation: errors.array() }));
+        }
+
+        try {
+            const account: string = String(req.params.account).trim();
+
+            const symbol = await this.contractManager.sideTokenContract.symbol();
+            const name = await this.contractManager.sideTokenContract.name();
+            const tokenAmount = BOACoin.make(1).value;
+            const pointAmount = await this.contractManager.sideCurrencyRateContract.convertTokenToPoint(tokenAmount);
+            const decimals = await this.contractManager.sideTokenContract.decimals();
+
+            const pointBalance = await this.contractManager.sideLedgerContract.pointBalanceOf(account);
+            const pointValue = BigNumber.from(pointBalance);
+
+            const tokenBalanceInLedger = await this.contractManager.sideLedgerContract.tokenBalanceOf(account);
+            const tokenValueInLedger = await this.contractManager.sideCurrencyRateContract.convertTokenToPoint(
+                tokenBalanceInLedger
+            );
+            const tokenBalanceInMainChain = await this.contractManager.mainTokenContract.balanceOf(account);
+            const tokenValueInMainChain = await this.contractManager.sideCurrencyRateContract.convertTokenToPoint(
+                tokenBalanceInMainChain
+            );
+            const tokenBalanceInSideChain = await this.contractManager.sideTokenContract.balanceOf(account);
+            const tokenValueInSideChain = await this.contractManager.sideCurrencyRateContract.convertTokenToPoint(
+                tokenBalanceInSideChain
+            );
+
+            this.metrics.add("success", 1);
+            return res.status(200).json(
+                this.makeResponseData(0, {
+                    account,
+                    tokenInfo: {
+                        symbol,
+                        name,
+                        decimals,
+                    },
+                    exchangeRate: {
+                        point: pointAmount.toString(),
+                        token: tokenAmount.toString(),
+                    },
+                    ledger: {
+                        point: { balance: pointBalance.toString(), value: pointValue.toString() },
+                        token: { balance: tokenBalanceInLedger.toString(), value: tokenValueInLedger.toString() },
+                    },
+                    mainChain: {
+                        point: { balance: "0", value: "0" },
+                        token: { balance: tokenBalanceInMainChain.toString(), value: tokenValueInMainChain.toString() },
+                    },
+                    sideChain: {
+                        point: { balance: "0", value: "0" },
+                        token: { balance: tokenBalanceInSideChain.toString(), value: tokenValueInSideChain.toString() },
+                    },
+                })
+            );
+        } catch (error: any) {
+            const msg = ResponseMessage.getEVMErrorMessage(error);
+            logger.error(`GET /v1/account/balance/:account : ${msg.error.message}`);
+            this.metrics.add("failure", 1);
+            return res.status(200).json(this.makeResponseData(msg.code, undefined, msg.error));
         }
     }
 }
