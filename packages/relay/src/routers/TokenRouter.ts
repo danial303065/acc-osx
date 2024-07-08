@@ -144,9 +144,19 @@ export class TokenRouter {
         this.app.get("/v1/chain/side/info", [], this.chain_side_info.bind(this));
         this.app.get("/v1/system/info", [], this.system_info.bind(this));
         this.app.get(
-            "/v1/account/balance/:account",
+            "/v1/summary/account/:account",
             [param("account").exists().trim().isEthereumAddress()],
-            this.account_balance.bind(this)
+            this.summary_account.bind(this)
+        );
+        this.app.get(
+            "/v1/summary/shop/:shopId",
+            [
+                param("shopId")
+                    .exists()
+                    .trim()
+                    .matches(/^(0x)[0-9a-f]{64}$/i),
+            ],
+            this.summary_shop.bind(this)
         );
     }
 
@@ -475,8 +485,8 @@ export class TokenRouter {
         }
     }
 
-    private async account_balance(req: express.Request, res: express.Response) {
-        logger.http(`GET /v1/account/balance/:account ${req.ip}:${JSON.stringify(req.params)}`);
+    private async summary_account(req: express.Request, res: express.Response) {
+        logger.http(`GET /v1/summary/account/:account ${req.ip}:${JSON.stringify(req.params)}`);
 
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -518,8 +528,14 @@ export class TokenRouter {
                         decimals,
                     },
                     exchangeRate: {
-                        point: pointAmount.toString(),
-                        token: tokenAmount.toString(),
+                        token: {
+                            symbol,
+                            value: tokenAmount.toString(),
+                        },
+                        currency: {
+                            symbol: this.config.relay.baseCurrency,
+                            value: pointAmount.toString(),
+                        },
                     },
                     ledger: {
                         point: { balance: pointBalance.toString(), value: pointValue.toString() },
@@ -533,11 +549,129 @@ export class TokenRouter {
                         point: { balance: "0", value: "0" },
                         token: { balance: tokenBalanceInSideChain.toString(), value: tokenValueInSideChain.toString() },
                     },
+                    protocolFees: {
+                        transfer: (await this.contractManager.mainTokenContract.getProtocolFee()).toString(),
+                        withdraw: (
+                            await this.contractManager.mainChainBridgeContract.getProtocolFee(
+                                this.contractManager.mainTokenId
+                            )
+                        ).toString(),
+                        deposit: (
+                            await this.contractManager.sideLoyaltyBridgeContract.getProtocolFee(
+                                this.contractManager.sideTokenId
+                            )
+                        ).toString(),
+                    },
                 })
             );
         } catch (error: any) {
             const msg = ResponseMessage.getEVMErrorMessage(error);
-            logger.error(`GET /v1/account/balance/:account : ${msg.error.message}`);
+            logger.error(`GET /v1/summary/account/:account : ${msg.error.message}`);
+            this.metrics.add("failure", 1);
+            return res.status(200).json(this.makeResponseData(msg.code, undefined, msg.error));
+        }
+    }
+
+    private async summary_shop(req: express.Request, res: express.Response) {
+        logger.http(`GET /v1/summary/shop/:shopId ${req.ip}:${JSON.stringify(req.params)}`);
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(200).json(ResponseMessage.getErrorMessage("2001", { validation: errors.array() }));
+        }
+
+        try {
+            const shopId: string = String(req.params.shopId).trim();
+            const info = await this.contractManager.sideShopContract.shopOf(shopId);
+            const info2 = await this.contractManager.sideShopContract.refundableOf(shopId);
+
+            const shopInfo = {
+                shopId: info.shopId,
+                name: info.name,
+                currency: info.currency,
+                status: info.status,
+                account: info.account,
+                delegator: info.delegator,
+                providedAmount: info.providedAmount.toString(),
+                usedAmount: info.usedAmount.toString(),
+                refundedAmount: info.refundedAmount.toString(),
+                refundableAmount: info2.refundableAmount.toString(),
+                refundableToken: info2.refundableToken.toString(),
+            };
+
+            const account: string = shopInfo.account;
+
+            const symbol = await this.contractManager.sideTokenContract.symbol();
+            const name = await this.contractManager.sideTokenContract.name();
+            const tokenAmount = BOACoin.make(1).value;
+            const pointAmount = await this.contractManager.sideCurrencyRateContract.convertTokenToPoint(tokenAmount);
+            const decimals = await this.contractManager.sideTokenContract.decimals();
+
+            const pointBalance = await this.contractManager.sideLedgerContract.pointBalanceOf(account);
+            const pointValue = BigNumber.from(pointBalance);
+
+            const tokenBalanceInLedger = await this.contractManager.sideLedgerContract.tokenBalanceOf(account);
+            const tokenValueInLedger = await this.contractManager.sideCurrencyRateContract.convertTokenToPoint(
+                tokenBalanceInLedger
+            );
+            const tokenBalanceInMainChain = await this.contractManager.mainTokenContract.balanceOf(account);
+            const tokenValueInMainChain = await this.contractManager.sideCurrencyRateContract.convertTokenToPoint(
+                tokenBalanceInMainChain
+            );
+            const tokenBalanceInSideChain = await this.contractManager.sideTokenContract.balanceOf(account);
+            const tokenValueInSideChain = await this.contractManager.sideCurrencyRateContract.convertTokenToPoint(
+                tokenBalanceInSideChain
+            );
+
+            this.metrics.add("success", 1);
+            return res.status(200).json(
+                this.makeResponseData(0, {
+                    shopInfo,
+                    tokenInfo: {
+                        symbol,
+                        name,
+                        decimals,
+                    },
+                    exchangeRate: {
+                        token: {
+                            symbol,
+                            value: tokenAmount.toString(),
+                        },
+                        currency: {
+                            symbol: this.config.relay.baseCurrency,
+                            value: pointAmount.toString(),
+                        },
+                    },
+                    ledger: {
+                        point: { balance: pointBalance.toString(), value: pointValue.toString() },
+                        token: { balance: tokenBalanceInLedger.toString(), value: tokenValueInLedger.toString() },
+                    },
+                    mainChain: {
+                        point: { balance: "0", value: "0" },
+                        token: { balance: tokenBalanceInMainChain.toString(), value: tokenValueInMainChain.toString() },
+                    },
+                    sideChain: {
+                        point: { balance: "0", value: "0" },
+                        token: { balance: tokenBalanceInSideChain.toString(), value: tokenValueInSideChain.toString() },
+                    },
+                    protocolFees: {
+                        transfer: (await this.contractManager.mainTokenContract.getProtocolFee()).toString(),
+                        withdraw: (
+                            await this.contractManager.mainChainBridgeContract.getProtocolFee(
+                                this.contractManager.mainTokenId
+                            )
+                        ).toString(),
+                        deposit: (
+                            await this.contractManager.sideLoyaltyBridgeContract.getProtocolFee(
+                                this.contractManager.sideTokenId
+                            )
+                        ).toString(),
+                    },
+                })
+            );
+        } catch (error: any) {
+            const msg = ResponseMessage.getEVMErrorMessage(error);
+            logger.error(`GET /v1/summary/shop/:shopId : ${msg.error.message}`);
             this.metrics.add("failure", 1);
             return res.status(200).json(this.makeResponseData(msg.code, undefined, msg.error));
         }
