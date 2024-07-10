@@ -520,7 +520,7 @@ export class PaymentRouter {
             const mobileData = await this.storage.getMobile(item.account, MobileType.USER_APP);
 
             if (!this.config.relay.testMode && mobileData === undefined) {
-                return res.status(200).json(ResponseMessage.getErrorMessage("2005"));
+                return res.status(200).json(ResponseMessage.getErrorMessage("2008"));
             }
 
             if (mobileData !== undefined) {
