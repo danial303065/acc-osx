@@ -108,10 +108,10 @@ class Deployments {
             bridgeValidator1,
             bridgeValidator2,
             bridgeValidator3,
-            publisher,
             tokenOwner1,
             tokenOwner2,
             tokenOwner3,
+            publisher,
             certifier01,
             certifier02,
             certifier03,
@@ -919,6 +919,9 @@ async function deployLedger(accounts: IAccount, deployment: Deployments) {
                 .registerAssistant(accounts.system.address, accounts.publisher.address, signature);
             console.log(`Register assistant address of system (tx: ${tx.hash})...`);
             // await tx.wait();
+
+            const value = await contract.assistantOf(accounts.system.address);
+            console.log("Assistance of System Account: ", value);
         }
     }
 }
