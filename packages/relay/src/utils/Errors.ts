@@ -76,6 +76,7 @@ export class ResponseMessage {
         ["2030", "This payment cannot be closed before it is approved"],
         ["2033", "The task ID is not exist"],
         ["2040", "The status code for this task cannot be approved"],
+        ["3001", "Bridge functionality is not yet available"],
         ["4000", "Denied by user"],
         ["5000", "Smart Contract Error"],
         ["6000", "Server Error"],
