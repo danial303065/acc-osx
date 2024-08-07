@@ -103,7 +103,7 @@ describe("Test for Shop", () => {
 
     before("Set Shop ID", async () => {
         for (const elem of shopData) {
-            elem.shopId = ContractUtils.getShopId(elem.wallet.address, LoyaltyNetworkID.LYT);
+            elem.shopId = ContractUtils.getShopId(elem.wallet.address, LoyaltyNetworkID.ACC_TESTNET);
         }
     });
 

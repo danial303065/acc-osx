@@ -26,8 +26,8 @@ import * as crypto from "crypto";
 import * as hre from "hardhat";
 
 export enum LoyaltyNetworkID {
-    LYT,
-    PNB,
+    ACC_TESTNET = 1,
+    ACC_MAINNET,
 }
 export class ContractUtils {
     public static findLog(receipt: ContractReceipt, iface: Interface, eventName: string): Log | undefined {
