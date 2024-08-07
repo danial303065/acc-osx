@@ -436,6 +436,11 @@ export class PaymentRouter {
             return res.status(200).json(ResponseMessage.getErrorMessage("2001", { validation: errors.array() }));
         }
 
+        const shopId: string = String(req.body.shopId).trim();
+        if (shopId.substring(0, 6) !== this.config.relay.allowedShopIdPrefix) {
+            return res.status(200).json(ResponseMessage.getErrorMessage("3072"));
+        }
+
         try {
             let accessKey = req.get("Authorization");
             if (accessKey === undefined) accessKey = String(req.body.accessKey).trim();
@@ -458,7 +463,6 @@ export class PaymentRouter {
             const purchaseId: string = String(req.body.purchaseId).trim();
             const amount: BigNumber = BigNumber.from(req.body.amount);
             const currency: string = String(req.body.currency).trim();
-            const shopId: string = String(req.body.shopId).trim();
 
             const feeRate = await this.contractManager.sideLedgerContract.getPaymentFee();
             const rate = await this.contractManager.sideCurrencyRateContract.get(currency.toLowerCase());

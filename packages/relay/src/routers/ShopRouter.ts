@@ -427,9 +427,13 @@ export class ShopRouter {
             return res.status(200).json(ResponseMessage.getErrorMessage("2001", { validation: errors.array() }));
         }
 
+        const shopId = String(req.body.shopId).trim();
+        if (shopId.substring(0, 6) !== this.config.relay.allowedShopIdPrefix) {
+            return res.status(200).json(ResponseMessage.getErrorMessage("3072"));
+        }
+
         const signerItem = await this.getRelaySigner();
         try {
-            const shopId: string = String(req.body.shopId).trim();
             const name: string = String(req.body.name).trim();
             const currency: string = String(req.body.currency).trim().toLowerCase();
             const account: string = String(req.body.account).trim();
@@ -554,6 +558,11 @@ export class ShopRouter {
             return res.status(200).json(ResponseMessage.getErrorMessage("2001", { validation: errors.array() }));
         }
 
+        const shopId: string = String(req.body.shopId).trim();
+        if (shopId.substring(0, 6) !== this.config.relay.allowedShopIdPrefix) {
+            return res.status(200).json(ResponseMessage.getErrorMessage("3072"));
+        }
+
         try {
             let accessKey = req.get("Authorization");
             if (accessKey === undefined) accessKey = String(req.body.accessKey).trim();
@@ -561,7 +570,6 @@ export class ShopRouter {
                 return res.json(ResponseMessage.getErrorMessage("2002"));
             }
 
-            const shopId: string = String(req.body.shopId).trim();
             const name: string = String(req.body.name).trim();
             const currency: string = String(req.body.currency).trim().toLowerCase();
 
@@ -821,6 +829,11 @@ export class ShopRouter {
             return res.status(200).json(ResponseMessage.getErrorMessage("2001", { validation: errors.array() }));
         }
 
+        const shopId: string = String(req.body.shopId).trim();
+        if (shopId.substring(0, 6) !== this.config.relay.allowedShopIdPrefix) {
+            return res.status(200).json(ResponseMessage.getErrorMessage("3072"));
+        }
+
         const signerItem = await this.getRelaySigner();
         try {
             let accessKey = req.get("Authorization");
@@ -829,7 +842,6 @@ export class ShopRouter {
                 return res.json(ResponseMessage.getErrorMessage("2002"));
             }
 
-            const shopId: string = String(req.body.shopId).trim();
             const status: number = Number(String(req.body.status).trim());
             const shopInfo = await this.contractManager.sideShopContract.shopOf(shopId);
             if (shopInfo.status !== 0) {

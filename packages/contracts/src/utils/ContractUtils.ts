@@ -24,8 +24,8 @@ import { verifyMessage } from "@ethersproject/wallet";
 import * as hre from "hardhat";
 
 export enum LoyaltyNetworkID {
-    LYT,
-    ACC,
+    ACC_TESTNET = 1,
+    ACC_MAINNET,
 }
 
 export class ContractUtils {
