@@ -209,6 +209,7 @@ export class RelayConfig implements IRelayConfig {
     public relayEndpoint: string;
     public encryptKey: string;
     public testMode: boolean;
+    public bridgeActiveStatus: boolean;
 
     constructor() {
         const defaults = RelayConfig.defaultValue();
@@ -224,6 +225,7 @@ export class RelayConfig implements IRelayConfig {
         this.relayEndpoint = defaults.relayEndpoint;
         this.encryptKey = defaults.encryptKey;
         this.testMode = defaults.testMode;
+        this.bridgeActiveStatus = defaults.bridgeActiveStatus;
     }
 
     public static defaultValue(): IRelayConfig {
@@ -245,6 +247,7 @@ export class RelayConfig implements IRelayConfig {
             relayEndpoint: "",
             encryptKey: "",
             testMode: false,
+            bridgeActiveStatus: true,
         };
     }
 
@@ -260,6 +263,8 @@ export class RelayConfig implements IRelayConfig {
         if (config.relayEndpoint !== undefined) this.relayEndpoint = config.relayEndpoint;
         if (config.encryptKey !== undefined) this.encryptKey = config.encryptKey;
         if (config.testMode !== undefined) this.testMode = config.testMode.toString().toLowerCase() === "true";
+        if (config.bridgeActiveStatus !== undefined)
+            this.bridgeActiveStatus = config.bridgeActiveStatus.toString().toLowerCase() === "true";
     }
 }
 
@@ -482,6 +487,7 @@ export interface IRelayConfig {
     relayEndpoint: string;
     encryptKey: string;
     testMode: boolean;
+    bridgeActiveStatus: boolean;
 }
 
 export interface IContractsConfig {
