@@ -91,6 +91,12 @@ export class ProviderRouter {
             this.provider_balance.bind(this)
         );
 
+        this.app.get(
+            "/v1/provider/status/:provider",
+            [param("provider").exists().trim().isEthereumAddress()],
+            this.provider_status.bind(this)
+        );
+
         this.app.post(
             "/v1/provider/send/account",
             [
@@ -143,7 +149,7 @@ export class ProviderRouter {
     }
 
     private async provider_balance(req: express.Request, res: express.Response) {
-        logger.http(`GET /v1/provider/balance/:account ${req.ip}:${JSON.stringify(req.params)}`);
+        logger.http(`GET /v1/provider/balance/:provider ${req.ip}:${JSON.stringify(req.params)}`);
 
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -166,7 +172,33 @@ export class ProviderRouter {
             );
         } catch (error: any) {
             const msg = ResponseMessage.getEVMErrorMessage(error);
-            logger.error(`GET /v1/provider/balance/account/:account : ${msg.error.message}`);
+            logger.error(`GET /v1/provider/balance/:provider : ${msg.error.message}`);
+            this.metrics.add("failure", 1);
+            return res.status(200).json(this.makeResponseData(msg.code, undefined, msg.error));
+        }
+    }
+
+    private async provider_status(req: express.Request, res: express.Response) {
+        logger.http(`GET /v1/provider/status/:provider ${req.ip}:${JSON.stringify(req.params)}`);
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(200).json(ResponseMessage.getErrorMessage("2001", { validation: errors.array() }));
+        }
+
+        try {
+            const provider: string = String(req.params.provider).trim();
+            const isProvider = await this.contractManager.sideLedgerContract.isProvider(provider);
+            this.metrics.add("success", 1);
+            return res.status(200).json(
+                this.makeResponseData(0, {
+                    provider,
+                    enable: isProvider,
+                })
+            );
+        } catch (error: any) {
+            const msg = ResponseMessage.getEVMErrorMessage(error);
+            logger.error(`GET /v1/provider/status/:provider : ${msg.error.message}`);
             this.metrics.add("failure", 1);
             return res.status(200).json(this.makeResponseData(msg.code, undefined, msg.error));
         }
