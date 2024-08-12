@@ -530,7 +530,7 @@ export class PaymentRouter {
             if (mobileData !== undefined) {
                 // tslint:disable-next-line:one-variable-per-declaration
                 let title, shopLabel, amountLabel, pointLabel: string;
-                if (mobileData.language === "kr") {
+                if (mobileData.language === "ko") {
                     title = "포인트 사용 알림";
                     shopLabel = "구매처";
                     amountLabel = "구매 금액";
@@ -559,6 +559,7 @@ export class PaymentRouter {
                 );
                 contents.push(`${pointLabel} : ${new Amount(item.paidPoint, 18).toDisplayString(true, 0)} POINT`);
 
+                logger.info(`Notification - to: ${to}, title: ${title}`);
                 await this._sender.send(to, title, contents.join(", "), data);
             }
 
@@ -1097,7 +1098,7 @@ export class PaymentRouter {
                     /// 상점주에게 메세지 발송
                     // tslint:disable-next-line:one-variable-per-declaration
                     let title, shopLabel, amountLabel, pointLabel: string;
-                    if (mobileData.language === "kr") {
+                    if (mobileData.language === "ko") {
                         title = "마일리지 사용 취소 알림";
                         shopLabel = "구매처";
                         amountLabel = "구매 금액";
@@ -1125,6 +1126,7 @@ export class PaymentRouter {
                     );
                     contents.push(`${pointLabel} : ${new Amount(item.paidPoint, 18).toDisplayString(true, 0)} POINT`);
 
+                    logger.info(`Notification - to: ${to}, title: ${title}`);
                     await this._sender.send(to, title, contents.join(", "), data);
                 }
 

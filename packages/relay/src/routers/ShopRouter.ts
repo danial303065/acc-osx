@@ -624,7 +624,7 @@ export class ShopRouter {
                     let title: string;
                     let shopLabel: string;
                     let currencyLabel: string;
-                    if (mobileData.language === "kr") {
+                    if (mobileData.language === "ko") {
                         title = "상점 정보 변경 요청";
                         shopLabel = "상점이름";
                         currencyLabel = "정산 환률 심벌";
@@ -644,6 +644,7 @@ export class ShopRouter {
                     };
                     contents.push(`${shopLabel} : ${item.name}`);
                     contents.push(`${currencyLabel} : ${item.currency}`);
+                    logger.info(`Notification - to: ${to}, title: ${title}`);
                     await this._sender.send(to, title, contents.join(", "), data);
                 }
 
@@ -897,7 +898,7 @@ export class ShopRouter {
                     let statusLabel: string;
                     let activeLabel: string;
                     let inactiveLabel: string;
-                    if (mobileData.language === "kr") {
+                    if (mobileData.language === "ko") {
                         title = "상점 상태 변경 요청";
                         shopLabel = "상점이름";
                         statusLabel = "변경될 상태값";
@@ -917,6 +918,7 @@ export class ShopRouter {
                     contents.push(
                         `${statusLabel} : ${item.status === ContractShopStatus.ACTIVE ? activeLabel : inactiveLabel}`
                     );
+                    logger.info(`Notification - to: ${to}, title: ${title}`);
                     await this._sender.send(to, title, contents.join(", "), data);
                 }
 
