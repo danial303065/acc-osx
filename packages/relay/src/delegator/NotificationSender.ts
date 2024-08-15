@@ -48,6 +48,7 @@ export class NotificationSender implements INotificationSender {
         for (const chunk of chunks) {
             try {
                 const ticketChunk = await expo.sendPushNotificationsAsync(chunk);
+                logger.info(`NotificationSender - to: ${to}, result: ${JSON.stringify(ticketChunk)}`);
                 tickets.push(...ticketChunk);
             } catch (error) {
                 logger.error(error);
