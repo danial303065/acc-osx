@@ -1038,7 +1038,13 @@ export class PaymentRouter {
             if (item === undefined) {
                 return res.status(200).json(ResponseMessage.getErrorMessage("2003"));
             } else {
-                if (item.paymentStatus !== LoyaltyPaymentTaskStatus.CLOSED_NEW) {
+                if (
+                    !(
+                        item.paymentStatus === LoyaltyPaymentTaskStatus.CLOSED_NEW ||
+                        item.paymentStatus === LoyaltyPaymentTaskStatus.DENIED_CANCEL ||
+                        item.paymentStatus === LoyaltyPaymentTaskStatus.FAILED_CANCEL
+                    )
+                ) {
                     return res.status(200).json(ResponseMessage.getErrorMessage("2022"));
                 }
 
