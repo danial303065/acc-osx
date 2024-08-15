@@ -1,0 +1,919 @@
+{
+  "info": {
+    "title": "Tspec API",
+    "version": "0.0.1",
+    "description": ""
+  },
+  "openapi": "3.0.3",
+  "paths": {
+    "/v1/currency/convert": {
+      "get": {
+        "operationId": "CurrencyApiSpec_get_/v1/currency/convert",
+        "tags": [
+          "Summary"
+        ],
+        "summary": "Provide value converted from one currency to another",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ICurrencyConvertResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/ledger/nonce/{account}": {
+      "get": {
+        "operationId": "LedgerApiSpec_get_/v1/ledger/nonce/{account}",
+        "tags": [
+          "Ledger"
+        ],
+        "summary": "Provide the nonce corresponding to the user's wallet address",
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ILedgerNonceResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/ledger/balance/account/{account}": {
+      "get": {
+        "operationId": "LedgerApiSpec_get_/v1/ledger/balance/account/{account}",
+        "tags": [
+          "Ledger"
+        ],
+        "summary": "Provide the balance corresponding to the user's wallet address",
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ILedgerBalanceAccountResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/ledger/balance/phone/{phone}": {
+      "get": {
+        "operationId": "LedgerApiSpec_get_/v1/ledger/balance/phone/{phone}",
+        "tags": [
+          "Ledger"
+        ],
+        "summary": "Provide the balance corresponding to the user's phone number",
+        "parameters": [
+          {
+            "name": "phone",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ILedgerBalancePhoneResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/ledger/balance/phoneHash/{phoneHash}": {
+      "get": {
+        "operationId": "LedgerApiSpec_get_/v1/ledger/balance/phoneHash/{phoneHash}",
+        "tags": [
+          "Ledger"
+        ],
+        "summary": "Provide the balance corresponding to the user's phone number hash",
+        "parameters": [
+          {
+            "name": "phoneHash",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ILedgerBalancePhoneHashResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/phone/hash/{phone}": {
+      "get": {
+        "operationId": "LedgerApiSpec_get_/v1/phone/hash/{phone}",
+        "tags": [
+          "Ledger"
+        ],
+        "summary": "Provide the hash of phone number",
+        "parameters": [
+          {
+            "name": "phone",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IPhoneHashResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/summary/account/{account}": {
+      "get": {
+        "operationId": "SummaryApiSpec_get_/v1/summary/account/{account}",
+        "tags": [
+          "Summary"
+        ],
+        "summary": "Provide general information corresponding to the user's wallet address",
+        "parameters": [
+          {
+            "name": "account",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ISummaryAccountResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ICurrencyConvertRequest": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "description": "Amount (info. 1 UNIT = \"1000000000000000000\", decimals is 18",
+            "type": "string"
+          },
+          "from": {
+            "description": "Currency Symbol of source (ex acc, point, usd, krw, php, ...)",
+            "type": "string"
+          },
+          "to": {
+            "description": "Currency Symbol of target (ex acc, point, usd, krw, php, ...)",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "amount",
+          "from",
+          "to"
+        ]
+      },
+      "ICurrencyConvertResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "description": "Result Code",
+            "type": "number"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "amount": {
+                "description": "Value converted to target currency (info. decimals is 18)",
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "amount"
+            ]
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "description": "Error Message",
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "message"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "data"
+        ]
+      },
+      "ILedgerNonceResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "description": "Result Code",
+            "type": "number"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "account": {
+                "description": "Address of wallet",
+                "type": "string"
+              },
+              "nonce": {
+                "description": "Nonce for address of wallet",
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "account",
+              "nonce"
+            ]
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "description": "Error Message",
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "message"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "data"
+        ]
+      },
+      "ILedgerBalanceAccountResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "description": "Result Code",
+            "type": "number"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "account": {
+                "description": "Address of wallet",
+                "type": "string"
+              },
+              "point": {
+                "type": "object",
+                "properties": {
+                  "balance": {
+                    "description": "Balance of Point",
+                    "type": "string"
+                  },
+                  "value": {
+                    "description": "Value of Point",
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "balance",
+                  "value"
+                ]
+              },
+              "token": {
+                "type": "object",
+                "properties": {
+                  "balance": {
+                    "description": "Balance of Token",
+                    "type": "string"
+                  },
+                  "value": {
+                    "description": "Value of Token",
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "balance",
+                  "value"
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "account",
+              "point",
+              "token"
+            ]
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "description": "Error Message",
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "message"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "data"
+        ]
+      },
+      "ILedgerBalancePhoneResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "description": "Result Code",
+            "type": "number"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "phone": {
+                "description": "Phone Number",
+                "type": "string"
+              },
+              "phoneHash": {
+                "description": "Phone Number Hash",
+                "type": "string"
+              },
+              "account": {
+                "description": "Address of wallet",
+                "type": "string"
+              },
+              "point": {
+                "type": "object",
+                "properties": {
+                  "balance": {
+                    "description": "Balance of Point",
+                    "type": "string"
+                  },
+                  "value": {
+                    "description": "Value of Point",
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "balance",
+                  "value"
+                ]
+              },
+              "token": {
+                "type": "object",
+                "properties": {
+                  "balance": {
+                    "description": "Balance of Token",
+                    "type": "string"
+                  },
+                  "value": {
+                    "description": "Value of Token",
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "balance",
+                  "value"
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "account",
+              "phone",
+              "phoneHash",
+              "point",
+              "token"
+            ]
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "description": "Error Message",
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "message"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "data"
+        ]
+      },
+      "ILedgerBalancePhoneHashResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "description": "Result Code",
+            "type": "number"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "phoneHash": {
+                "description": "Phone Number Hash",
+                "type": "string"
+              },
+              "account": {
+                "description": "Address of wallet",
+                "type": "string"
+              },
+              "point": {
+                "type": "object",
+                "properties": {
+                  "balance": {
+                    "description": "Balance of Point",
+                    "type": "string"
+                  },
+                  "value": {
+                    "description": "Value of Point",
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "balance",
+                  "value"
+                ]
+              },
+              "token": {
+                "type": "object",
+                "properties": {
+                  "balance": {
+                    "description": "Balance of Token",
+                    "type": "string"
+                  },
+                  "value": {
+                    "description": "Value of Token",
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "balance",
+                  "value"
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "account",
+              "phoneHash",
+              "point",
+              "token"
+            ]
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "description": "Error Message",
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "message"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "data"
+        ]
+      },
+      "IPhoneHashResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "description": "Result Code",
+            "type": "number"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "phone": {
+                "description": "Phone Number",
+                "type": "string"
+              },
+              "phoneHash": {
+                "description": "Phone Number Hash",
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "phone",
+              "phoneHash"
+            ]
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "description": "Error Message",
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "message"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "data"
+        ]
+      },
+      "ISummaryAccountResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "description": "Result Code",
+            "type": "number"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "account": {
+                "description": "Address of wallet",
+                "type": "string"
+              },
+              "tokenInfo": {
+                "type": "object",
+                "properties": {
+                  "symbol": {
+                    "description": "Symbol of Token",
+                    "type": "string"
+                  },
+                  "name": {
+                    "description": "Name of Token",
+                    "type": "string"
+                  },
+                  "decimals": {
+                    "description": "Decimals of Token",
+                    "type": "number"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "decimals",
+                  "name",
+                  "symbol"
+                ]
+              },
+              "exchangeRate": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "object",
+                    "properties": {
+                      "symbol": {
+                        "description": "Symbol of Token (info. decimals is 18)",
+                        "type": "string"
+                      },
+                      "value": {
+                        "description": "Amount of Token (info. decimals is 18)",
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                      "symbol",
+                      "value"
+                    ]
+                  },
+                  "currency": {
+                    "type": "object",
+                    "properties": {
+                      "symbol": {
+                        "description": "Symbol of Default Currency (info. decimals is 18)",
+                        "type": "string"
+                      },
+                      "value": {
+                        "description": "Default Currency Value for one token (info. decimals is 18)",
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                      "symbol",
+                      "value"
+                    ]
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "currency",
+                  "token"
+                ]
+              },
+              "provider": {
+                "type": "object",
+                "properties": {
+                  "enable": {
+                    "description": "If true, this account is a point provider.",
+                    "type": "boolean"
+                  },
+                  "assistant": {
+                    "description": "Technical representatives to provide points",
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "assistant",
+                  "enable"
+                ]
+              },
+              "ledger": {
+                "type": "object",
+                "properties": {
+                  "point": {
+                    "type": "object",
+                    "properties": {
+                      "balance": {
+                        "description": "Balance of point in the Ledger (info. decimals is 18)",
+                        "type": "string"
+                      },
+                      "value": {
+                        "description": "Default Currency Value of point in the Ledger (info. decimals is 18)",
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                      "balance",
+                      "value"
+                    ]
+                  },
+                  "token": {
+                    "type": "object",
+                    "properties": {
+                      "balance": {
+                        "description": "Balance of token in the Ledger (info. decimals is 18)",
+                        "type": "string"
+                      },
+                      "value": {
+                        "description": "Default Currency Value of token in the Ledger (info. decimals is 18)",
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                      "balance",
+                      "value"
+                    ]
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "point",
+                  "token"
+                ]
+              },
+              "mainChain": {
+                "type": "object",
+                "properties": {
+                  "point": {
+                    "type": "object",
+                    "properties": {
+                      "balance": {
+                        "description": "Balance of point in the Main Chain (info. decimals is 18)",
+                        "type": "string"
+                      },
+                      "value": {
+                        "description": "Default Currency Value of point in the Main Chain (info. decimals is 18)",
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                      "balance",
+                      "value"
+                    ]
+                  },
+                  "token": {
+                    "type": "object",
+                    "properties": {
+                      "balance": {
+                        "description": "Balance of token in the Main Chain (info. decimals is 18)",
+                        "type": "string"
+                      },
+                      "value": {
+                        "description": "Default Currency Value of token in the Main Chain (info. decimals is 18)",
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                      "balance",
+                      "value"
+                    ]
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "point",
+                  "token"
+                ]
+              },
+              "sideChain": {
+                "type": "object",
+                "properties": {
+                  "point": {
+                    "type": "object",
+                    "properties": {
+                      "balance": {
+                        "description": "Balance of point in the Side Chain (info. decimals is 18)",
+                        "type": "string"
+                      },
+                      "value": {
+                        "description": "Default Currency Value of point in the Side Chain (info. decimals is 18)",
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                      "balance",
+                      "value"
+                    ]
+                  },
+                  "token": {
+                    "type": "object",
+                    "properties": {
+                      "balance": {
+                        "description": "Balance of token in the Side Chain (info. decimals is 18)",
+                        "type": "string"
+                      },
+                      "value": {
+                        "description": "Default Currency Value of token in the Side Chain (info. decimals is 18)",
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                      "balance",
+                      "value"
+                    ]
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "point",
+                  "token"
+                ]
+              },
+              "protocolFees": {
+                "type": "object",
+                "properties": {
+                  "transfer": {
+                    "description": "Protocol fees required to use the transfer function (info. decimals is 18)",
+                    "type": "string"
+                  },
+                  "withdraw": {
+                    "description": "Protocol fees required to use the withdrawal function (info. decimals is 18)",
+                    "type": "string"
+                  },
+                  "deposit": {
+                    "description": "Protocol fees required to use the deposit function (info. decimals is 18)",
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "deposit",
+                  "transfer",
+                  "withdraw"
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "account",
+              "exchangeRate",
+              "ledger",
+              "mainChain",
+              "protocolFees",
+              "provider",
+              "sideChain",
+              "tokenInfo"
+            ]
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "description": "Error Message",
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "message"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "data"
+        ]
+      }
+    }
+  }
+}
