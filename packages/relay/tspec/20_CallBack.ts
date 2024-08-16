@@ -67,7 +67,7 @@ interface TaskCallBackResponse {
 }
 
 export type CallbackApiSpec = Tspec.DefineApiSpec<{
-    tags: ["Payment", "Shop"];
+    tags: ["Payment", "Shop", "External CallBack"];
     paths: {
         "/external/callback": {
             post: {

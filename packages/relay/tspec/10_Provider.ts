@@ -154,7 +154,7 @@ interface IProviderAssistantResponse {
 }
 
 export type ProviderApiSpec = Tspec.DefineApiSpec<{
-    tags: ["Provider"];
+    tags: ["Loyalty Point Provider"];
     paths: {
         "/v1/provider/assistant/{provider}": {
             get: {

@@ -1,0 +1,13 @@
+{
+  "specPathGlobs": ["tspec/**/*.ts"],
+  "tsconfigPath": "./tsconfig.json",
+  "outputPath": "./generate/openapi.json",
+  "specVersion": 3,
+  "openapi": {
+    "title": "Decentralized Loyalty System API",
+    "version": "1.0.0",
+    "description": "API of Decentralized Loyalty System"
+  },
+  "debug": false,
+  "ignoreErrors": true
+}
