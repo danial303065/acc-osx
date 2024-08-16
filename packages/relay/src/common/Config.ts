@@ -211,6 +211,7 @@ export class RelayConfig implements IRelayConfig {
     public testMode: boolean;
     public bridgeActiveStatus: boolean;
     public allowedShopIdPrefix: string;
+    public initialBalanceOfProvider: number;
 
     constructor() {
         const defaults = RelayConfig.defaultValue();
@@ -228,6 +229,7 @@ export class RelayConfig implements IRelayConfig {
         this.testMode = defaults.testMode;
         this.bridgeActiveStatus = defaults.bridgeActiveStatus;
         this.allowedShopIdPrefix = defaults.allowedShopIdPrefix;
+        this.initialBalanceOfProvider = defaults.initialBalanceOfProvider;
     }
 
     public static defaultValue(): IRelayConfig {
@@ -251,6 +253,7 @@ export class RelayConfig implements IRelayConfig {
             testMode: false,
             bridgeActiveStatus: true,
             allowedShopIdPrefix: "0x0001",
+            initialBalanceOfProvider: 50000,
         };
     }
 
@@ -269,6 +272,8 @@ export class RelayConfig implements IRelayConfig {
         if (config.bridgeActiveStatus !== undefined)
             this.bridgeActiveStatus = config.bridgeActiveStatus.toString().toLowerCase() === "true";
         if (config.allowedShopIdPrefix !== undefined) this.allowedShopIdPrefix = config.allowedShopIdPrefix;
+        if (config.initialBalanceOfProvider !== undefined)
+            this.initialBalanceOfProvider = config.initialBalanceOfProvider;
     }
 }
 
@@ -493,6 +498,7 @@ export interface IRelayConfig {
     testMode: boolean;
     bridgeActiveStatus: boolean;
     allowedShopIdPrefix: string;
+    initialBalanceOfProvider: number;
 }
 
 export interface IContractsConfig {

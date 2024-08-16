@@ -980,4 +980,19 @@ export class RelayStorage extends Storage {
         });
     }
     /// endregion
+
+    public postNewProvider(provider: string): Promise<void> {
+        return new Promise<void>(async (resolve, reject) => {
+            this.queryForMapper("register_provider", "postProvider", {
+                provider,
+            })
+                .then(() => {
+                    return resolve();
+                })
+                .catch((reason) => {
+                    if (reason instanceof Error) return reject(reason);
+                    return reject(new Error(reason));
+                });
+        });
+    }
 }
