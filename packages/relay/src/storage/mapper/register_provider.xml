@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="register_provider">
+
+    <insert id="postProvider">
+        INSERT INTO register_provider
+        (
+            "provider"    ,
+            "timestamp"
+        )
+        VALUES
+        (
+            #{provider}  ,
+            now()
+        )
+        ON CONFLICT ("sequence")
+        DO UPDATE
+           SET
+               "provider" = EXCLUDED."provider",
+               "timestamp" = EXCLUDED."timestamp";
+    </insert>
+
+    <select id="read">
+        SELECT * FROM register_provider;
+    </select>
+
+    <select id="remove">
+        DELETE FROM register_provider WHERE sequence = ${sequence};
+    </select>
+</mapper>

@@ -113,6 +113,20 @@
 
     </sql>
 
+    <sql id="register_provider">
+        CREATE TABLE IF NOT EXISTS register_provider
+        (
+            "sequence"              BIGINT generated always as identity,
+            "provider"              VARCHAR(42)  NOT NULL,
+            "timestamp"             TIMESTAMP,
+            PRIMARY KEY ("sequence")
+        );
+        CREATE SEQUENCE IF NOT EXISTS register_provider_sequence_seq;
+        CREATE INDEX IF NOT EXISTS register_provider_provider_index
+            on register_provider (provider);
+
+    </sql>
+
     <select id="create_table">
         <include refid="payments"/>
         <include refid="tasks"/>
@@ -120,6 +134,7 @@
         <include refid="purchase"/>
         <include refid="delegators"/>
         <include refid="temporary_accounts"/>
+        <include refid="register_provider"/>
     </select>
 
     <select id="drop_table">
@@ -129,6 +144,7 @@
         DROP TABLE purchases;
         DROP TABLE delegators;
         DROP TABLE temporary_accounts;
+        DROP TABLE register_provider;
     </select>
 
 </mapper>
