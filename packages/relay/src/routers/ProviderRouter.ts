@@ -85,6 +85,18 @@ export class ProviderRouter {
     }
 
     public registerRoutes() {
+        this.app.post(
+            "/v1/provider/register",
+            [
+                body("provider").exists().trim().isEthereumAddress(),
+                body("signature")
+                    .exists()
+                    .trim()
+                    .matches(/^(0x)[0-9a-f]{130}$/i),
+            ],
+            this.provider_register.bind(this)
+        );
+
         this.app.get(
             "/v1/provider/balance/:provider",
             [param("provider").exists().trim().isEthereumAddress()],
@@ -146,6 +158,44 @@ export class ProviderRouter {
             [param("provider").exists().trim().isEthereumAddress()],
             this.provider_assistant.bind(this)
         );
+    }
+
+    private async provider_register(req: express.Request, res: express.Response) {
+        logger.http(`POST /v1/provider/register ${req.ip}:${JSON.stringify(req.body)}`);
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(200).json(ResponseMessage.getErrorMessage("2001", { validation: errors.array() }));
+        }
+
+        const signerItem = await this.getRelaySigner(this.contractManager.sideChainProvider);
+        try {
+            const provider: string = String(req.body.provider).trim();
+            const signature: string = String(req.body.signature).trim();
+
+            const nonce = await this.contractManager.sideLedgerContract.nonceOf(provider);
+            const message = ContractUtils.getRegisterProviderMessage(provider, nonce, this.contractManager.sideChainId);
+            if (!ContractUtils.verifyMessage(provider, message, signature))
+                return res.status(200).json(ResponseMessage.getErrorMessage("1501"));
+
+            const balance = await this.contractManager.sideLedgerContract.tokenBalanceOf(provider);
+            const minimum = BOACoin.make(this.config.relay.initialBalanceOfProvider).value;
+            if (balance.lt(minimum)) {
+                return res.status(200).json(ResponseMessage.getErrorMessage("1511"));
+            }
+
+            await this.storage.postNewProvider(provider);
+
+            this.metrics.add("success", 1);
+            return res.status(200).json(this.makeResponseData(0, { provider }));
+        } catch (error: any) {
+            const msg = ResponseMessage.getEVMErrorMessage(error);
+            logger.error(`POST /v1/provider/register : ${msg.error.message}`);
+            this.metrics.add("failure", 1);
+            return res.status(200).json(this.makeResponseData(msg.code, undefined, msg.error));
+        } finally {
+            this.releaseRelaySigner(signerItem);
+        }
     }
 
     private async provider_balance(req: express.Request, res: express.Response) {
