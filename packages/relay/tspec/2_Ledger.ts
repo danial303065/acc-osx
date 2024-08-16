@@ -103,33 +103,9 @@ interface ILedgerBalancePhoneHashResponse {
     };
 }
 
-interface IPhoneHashResponse {
-    /** Result Code */
-    code: number;
-    data: {
-        /** Phone Number */
-        phone: string;
-        /** Phone Number Hash */
-        phoneHash: string;
-    };
-    error?: {
-        /** Error Message */
-        message: string;
-    };
-}
-
 export type LedgerApiSpec = Tspec.DefineApiSpec<{
     tags: ["Ledger"];
     paths: {
-        "/v1/ledger/nonce/{account}": {
-            get: {
-                summary: "Provide the nonce corresponding to the user's wallet address";
-                path: { account: string };
-                responses: {
-                    200: ILedgerNonceResponse;
-                };
-            };
-        };
         "/v1/ledger/balance/account/{account}": {
             get: {
                 summary: "Provide the balance corresponding to the user's wallet address";
@@ -157,12 +133,12 @@ export type LedgerApiSpec = Tspec.DefineApiSpec<{
                 };
             };
         };
-        "/v1/phone/hash/{phone}": {
+        "/v1/ledger/nonce/{account}": {
             get: {
-                summary: "Provide the hash of phone number";
-                path: { phone: string };
+                summary: "Provide the nonce corresponding to the user's wallet address";
+                path: { account: string };
                 responses: {
-                    200: IPhoneHashResponse;
+                    200: ILedgerNonceResponse;
                 };
             };
         };

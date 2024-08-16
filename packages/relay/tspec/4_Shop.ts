@@ -1,4 +1,5 @@
 import { Tspec } from "tspec";
+import { ShopTaskStatus } from "./types";
 
 interface IShopNonceResponse {
     /** Result Code */
@@ -101,7 +102,7 @@ interface IShopUpdateCreateResponse {
         /** New currency symbol to be changed of Shop */
         currency: string;
         /** Task progress status ( 11: OPENED, 12: FAILED_TX, 13: REVERTED_TX, 14: SENT_TX, 15: DENIED, 16: COMPLETED ) */
-        taskStatus: number;
+        taskStatus: ShopTaskStatus;
         /** Task start time */
         timestamp: number;
     };
@@ -133,7 +134,7 @@ interface IShopUpdateApprovalResponse {
         /** New currency symbol to be changed of Shop */
         currency: string;
         /** Task progress status ( 11: OPENED, 12: FAILED_TX, 13: REVERTED_TX, 14: SENT_TX, 15: DENIED, 16: COMPLETED ) */
-        taskStatus: number;
+        taskStatus: ShopTaskStatus;
         /** Task start time */
         timestamp: number;
         /** Hash of transaction */
@@ -163,7 +164,7 @@ interface IShopStatusCreateResponse {
         /** Active status of Shop ( 1: ACTIVE, 2: INACTIVE ) */
         status: number;
         /** Task progress status ( 11: OPENED, 12: FAILED_TX, 13: REVERTED_TX, 14: SENT_TX, 15: DENIED, 16: COMPLETED ) */
-        taskStatus: number;
+        taskStatus: ShopTaskStatus;
         /** Task start time */
         timestamp: number;
     };
@@ -193,7 +194,7 @@ interface IShopStatusApprovalResponse {
         /** Active status of Shop ( 1: ACTIVE, 2: INACTIVE ) */
         status: number;
         /** Task progress status ( 11: OPENED, 12: FAILED_TX, 13: REVERTED_TX, 14: SENT_TX, 15: DENIED, 16: COMPLETED ) */
-        taskStatus: number;
+        taskStatus: ShopTaskStatus;
         /** Task start time */
         timestamp: number;
         /** Hash of transaction */
@@ -227,7 +228,7 @@ interface IShopTaskResponse {
         /** Active status of Shop ( 0: None, 1: ACTIVE, 2: INACTIVE ) */
         status: number;
         /** Task progress status ( 11: OPENED, 12: FAILED_TX, 13: REVERTED_TX, 14: SENT_TX, 15: DENIED, 16: COMPLETED ) */
-        taskStatus: number;
+        taskStatus: ShopTaskStatus;
         /** Wallet address of shop owner */
         account: string;
         /** Task start time */
@@ -256,15 +257,6 @@ interface IShopRefundableResponse {
 export type ShopApiSpec = Tspec.DefineApiSpec<{
     tags: ["Shop"];
     paths: {
-        "/v1/shop/nonce/{account}": {
-            get: {
-                summary: "Provide the nonce corresponding to the wallet address of the shop owner";
-                path: { account: string };
-                responses: {
-                    200: IShopNonceResponse;
-                };
-            };
-        };
         "/v1/shop/info/{shopId}": {
             get: {
                 summary: "Provide shop information";
@@ -280,6 +272,24 @@ export type ShopApiSpec = Tspec.DefineApiSpec<{
                 parameters: IShopListRequest;
                 responses: {
                     200: IShopListResponse;
+                };
+            };
+        };
+        "/v1/shop/nonce/{account}": {
+            get: {
+                summary: "Provide the nonce corresponding to the wallet address of the shop owner";
+                path: { account: string };
+                responses: {
+                    200: IShopNonceResponse;
+                };
+            };
+        };
+        "/v1/shop/refundable/{shopId}": {
+            get: {
+                summary: "Provide shop information";
+                path: { shopId: string };
+                responses: {
+                    200: IShopRefundableResponse;
                 };
             };
         };
@@ -325,15 +335,6 @@ export type ShopApiSpec = Tspec.DefineApiSpec<{
                 body: IShopTaskRequest;
                 responses: {
                     200: IShopTaskResponse;
-                };
-            };
-        };
-        "/v1/shop/refundable/{shopId}": {
-            get: {
-                summary: "Provide shop information";
-                path: { shopId: string };
-                responses: {
-                    200: IShopRefundableResponse;
                 };
             };
         };

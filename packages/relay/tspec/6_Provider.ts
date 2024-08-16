@@ -18,11 +18,6 @@ interface IProviderRegisterResponse {
     };
 }
 
-interface IProviderBalanceRequest {
-    /** Wallet address of the provider */
-    provider: string;
-}
-
 interface IProviderBalanceResponse {
     /** Result Code */
     code: number;
@@ -40,11 +35,6 @@ interface IProviderBalanceResponse {
         /** Error Message */
         message: string;
     };
-}
-
-interface IProviderStatusRequest {
-    /** Wallet address of the provider */
-    provider: string;
 }
 
 interface IProviderStatusResponse {
@@ -148,11 +138,6 @@ interface IProviderAssistantRegisterResponse {
     };
 }
 
-interface IProviderAssistantRequest {
-    /** Wallet address of the provider */
-    provider: string;
-}
-
 interface IProviderAssistantResponse {
     /** Result Code */
     code: number;
@@ -171,30 +156,39 @@ interface IProviderAssistantResponse {
 export type ProviderApiSpec = Tspec.DefineApiSpec<{
     tags: ["Provider"];
     paths: {
-        "/v1/provider/register": {
-            post: {
-                summary: "Register the provider. To become a point provider, you must first deposit 50,000 tokens";
-                body: IProviderRegisterRequest;
+        "/v1/provider/assistant/{provider}": {
+            get: {
+                summary: "Provides the assistant's information";
+                path: { provider: string };
                 responses: {
-                    200: IProviderRegisterResponse;
+                    200: IProviderAssistantResponse;
+                };
+            };
+        };
+        "/v1/provider/assistant/register": {
+            post: {
+                summary: "Register the provider's assistant. The assistant can only process the instructions of the point transfer";
+                body: IProviderAssistantRegisterRequest;
+                responses: {
+                    200: IProviderAssistantRegisterResponse;
                 };
             };
         };
         "/v1/provider/balance/{provider}": {
             get: {
                 summary: "Provide a point provider's assets";
-                path: IProviderBalanceRequest;
+                path: { provider: string };
                 responses: {
                     200: IProviderBalanceResponse;
                 };
             };
         };
-        "/v1/provider/status/{provider}": {
-            get: {
-                summary: "Provides the status value of the point provider";
-                path: IProviderStatusRequest;
+        "/v1/provider/register": {
+            post: {
+                summary: "Register the provider. To become a point provider, you must first deposit 50,000 tokens";
+                body: IProviderRegisterRequest;
                 responses: {
-                    200: IProviderStatusResponse;
+                    200: IProviderRegisterResponse;
                 };
             };
         };
@@ -216,21 +210,12 @@ export type ProviderApiSpec = Tspec.DefineApiSpec<{
                 };
             };
         };
-        "/v1/provider/assistant/register": {
-            post: {
-                summary: "Register the provider's assistant. The assistant can only process the instructions of the point transfer";
-                body: IProviderAssistantRegisterRequest;
-                responses: {
-                    200: IProviderAssistantRegisterResponse;
-                };
-            };
-        };
-        "/v1/provider/assistant/{provider}": {
+        "/v1/provider/status/{provider}": {
             get: {
-                summary: "Provides the assistant's information";
-                path: IProviderAssistantRequest;
+                summary: "Provides the status value of the point provider";
+                path: { provider: string };
                 responses: {
-                    200: IProviderAssistantResponse;
+                    200: IProviderStatusResponse;
                 };
             };
         };

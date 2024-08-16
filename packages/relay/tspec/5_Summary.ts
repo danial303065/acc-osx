@@ -198,8 +198,8 @@ interface ISummaryShopResponse {
     };
 }
 
-export type SummaryApiSpec = Tspec.DefineApiSpec<{
-    tags: ["Summary"];
+export type Summary1ApiSpec = Tspec.DefineApiSpec<{
+    tags: ["Summary", "Ledger"];
     paths: {
         "/v1/summary/account/{account}": {
             get: {
@@ -210,6 +210,12 @@ export type SummaryApiSpec = Tspec.DefineApiSpec<{
                 };
             };
         };
+    };
+}>;
+
+export type Summary2ApiSpec = Tspec.DefineApiSpec<{
+    tags: ["Summary", "Shop"];
+    paths: {
         "/v1/summary/shop/{shopId}": {
             get: {
                 summary: "Provide general information corresponding to the ID of shop";
