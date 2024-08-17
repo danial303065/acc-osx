@@ -6,7 +6,7 @@ export type LedgerApiSpec = Tspec.DefineApiSpec<{
         "/v1/ledger/balance/account/{account}": {
             get: {
                 summary: "Provide the balance corresponding to the wallet address";
-                description: "It provides both the balance of points and tokens. It also provides the value converted into basic currency units along with the balance. All numbers are 18 decimal places. Response data consists of three parts: `code`, `data`, and `error`. The value of `code` is 0 if normal. In this case, the value of `data` exists. If the value of `code` is not 0, check the content of `error`."
+                description: "It provides both the balance of points and tokens.</br>It also provides the value converted into basic currency units along with the balance."
                 path: {
                     /**
                      * Address of wallet
@@ -18,15 +18,10 @@ export type LedgerApiSpec = Tspec.DefineApiSpec<{
                     200: {
                         /**
                          * Result Code
-                         * If this value is 0, the `data` has a value and no `error`.
-                         * However, if it is not 0, check the contents of the message in `error`
                          * @example 0
                          */
                         code: number;
 
-                        /**
-                         * This value only exists if `code` is 0, otherwise it is `undefined`.
-                         */
                         data?: {
                             /**
                              * Address of wallet
@@ -61,9 +56,6 @@ export type LedgerApiSpec = Tspec.DefineApiSpec<{
                             };
                         };
 
-                        /**
-                         * This value only exists if `code` is not 0, otherwise it is `undefined`.
-                         */
                         error?: {
                             /**
                              * Error Message
@@ -78,6 +70,7 @@ export type LedgerApiSpec = Tspec.DefineApiSpec<{
         "/v1/ledger/balance/phone/{phone}": {
             get: {
                 summary: "Provide the balance corresponding to the user`s phone number";
+                description: "It provides both the balance of points and tokens.</br>It also provides the value converted into basic currency units along with the balance."
                 path: {
                     /**
                      * Phone number
@@ -152,6 +145,7 @@ export type LedgerApiSpec = Tspec.DefineApiSpec<{
         "/v1/ledger/balance/phoneHash/{phoneHash}": {
             get: {
                 summary: "Provide the balance corresponding to the user's phone number hash";
+                description: "It provides both the balance of points and tokens.</br>It also provides the value converted into basic currency units along with the balance."
                 path: {
                     /**
                      * Phone number hash
@@ -221,6 +215,7 @@ export type LedgerApiSpec = Tspec.DefineApiSpec<{
         "/v1/ledger/nonce/{account}": {
             get: {
                 summary: "Provide the nonce corresponding to the user's wallet address";
+                description: "The nonce is required for signing.</br>This is to produce a signature result that is not the same, including the ever-changing nonce in the original data to be signed.</br>The nonce is recorded in the contract, which increases the value of the nonce by 1 when the signature is used."
                 path: {
                     /**
                      * Address of wallet
@@ -264,6 +259,7 @@ export type LedgerApiSpec = Tspec.DefineApiSpec<{
         "/v1/ledger/exchangePointToToken": {
             post: {
                 summary: "Exchange points to tokens";
+                description: "";
                 body: {
                     /**
                      * Wallet address of user
