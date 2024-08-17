@@ -2,23 +2,38 @@ import { Tspec } from "tspec";
 import { ShopTaskStatus } from "./types";
 
 interface IShopNonceResponse {
-    /** Result Code */
+    /**
+     * Result Code
+     * @example 0
+     */
     code: number;
     data: {
-        /** Address of wallet */
+        /**
+         * Address of wallet
+         * @example "0x5650CD3E6E8963B43D21FAE60EE7A03BCEFCE766"
+         */
         account: string;
 
-        /** Nonce for address of wallet */
+        /**
+         * Nonce for address of wallet in Shop Contract
+         * @example "45"
+         */
         nonce: string;
     };
     error?: {
-        /** Error Message */
+        /**
+         * Error Message
+         * @example "Failed to check the validity of parameters"
+         */
         message: string;
     };
 }
 
 interface IShopInfoResponse {
-    /** Result Code */
+    /**
+     * Result Code
+     * @example 0
+     */
     code: number;
     data: {
         /** ID of Shop */
@@ -41,7 +56,10 @@ interface IShopInfoResponse {
         refundedAmount: string;
     };
     error?: {
-        /** Error Message */
+        /**
+         * Error Message
+         * @example "Failed to check the validity of parameters"
+         */
         message: string;
     };
 }
@@ -72,11 +90,17 @@ interface IShopListRequest {
 }
 
 interface IShopListResponse {
-    /** Result Code */
+    /**
+     * Result Code
+     * @example 0
+     */
     code: number;
     data: IShopListResponseItem[];
     error?: {
-        /** Error Message */
+        /**
+         * Error Message
+         * @example "Failed to check the validity of parameters"
+         */
         message: string;
     };
 }
@@ -90,7 +114,10 @@ interface IShopUpdateCreateRequest {
 }
 
 interface IShopUpdateCreateResponse {
-    /** Result Code */
+    /**
+     * Result Code
+     * @example 0
+     */
     code: number;
     data: {
         /** ID of Task */
@@ -107,7 +134,10 @@ interface IShopUpdateCreateResponse {
         timestamp: number;
     };
     error?: {
-        /** Error Message */
+        /**
+         * Error Message
+         * @example "Failed to check the validity of parameters"
+         */
         message: string;
     };
 }
@@ -122,7 +152,10 @@ interface IShopUpdateApprovalRequest {
 }
 
 interface IShopUpdateApprovalResponse {
-    /** Result Code */
+    /**
+     * Result Code
+     * @example 0
+     */
     code: number;
     data: {
         /** ID of Task */
@@ -141,7 +174,10 @@ interface IShopUpdateApprovalResponse {
         txHash?: string;
     };
     error?: {
-        /** Error Message */
+        /**
+         * Error Message
+         * @example "Failed to check the validity of parameters"
+         */
         message: string;
     };
 }
@@ -154,7 +190,10 @@ interface IShopStatusCreateRequest {
 }
 
 interface IShopStatusCreateResponse {
-    /** Result Code */
+    /**
+     * Result Code
+     * @example 0
+     */
     code: number;
     data: {
         /** ID of Task */
@@ -169,7 +208,10 @@ interface IShopStatusCreateResponse {
         timestamp: number;
     };
     error?: {
-        /** Error Message */
+        /**
+         * Error Message
+         * @example "Failed to check the validity of parameters"
+         */
         message: string;
     };
 }
@@ -184,7 +226,10 @@ interface IShopStatusApprovalRequest {
 }
 
 interface IShopStatusApprovalResponse {
-    /** Result Code */
+    /**
+     * Result Code
+     * @example 0
+     */
     code: number;
     data: {
         /** ID of Task */
@@ -201,7 +246,10 @@ interface IShopStatusApprovalResponse {
         txHash?: string;
     };
     error?: {
-        /** Error Message */
+        /**
+         * Error Message
+         * @example "Failed to check the validity of parameters"
+         */
         message: string;
     };
 }
@@ -212,7 +260,10 @@ interface IShopTaskRequest {
 }
 
 interface IShopTaskResponse {
-    /** Result Code */
+    /**
+     * Result Code
+     * @example 0
+     */
     code: number;
     data: {
         /** ID of Task */
@@ -235,13 +286,19 @@ interface IShopTaskResponse {
         timestamp: number;
     };
     error?: {
-        /** Error Message */
+        /**
+         * Error Message
+         * @example "Failed to check the validity of parameters"
+         */
         message: string;
     };
 }
 
 interface IShopRefundableResponse {
-    /** Result Code */
+    /**
+     * Result Code
+     * @example 0
+     */
     code: number;
     data: {
         /** Basic currency amount equivalent to refundable amount */
@@ -250,7 +307,10 @@ interface IShopRefundableResponse {
         refundableToken: string;
     };
     error?: {
-        /** Error Message */
+        /**
+         * Error Message
+         * @example "Failed to check the validity of parameters"
+         */
         message: string;
     };
 }
