@@ -457,7 +457,7 @@
           "Ledger"
         ],
         "summary": "Exchange points to tokens",
-        "description": "",
+        "description": "Exchange your points for tokens.</br>Signatures are required to request this.</br>Your wallet address, amount of exchange, nonce, and chain ID will be used for your signature.</br>The exchange rate is based on the price of the token recorded by the validators by agreement.",
         "parameters": [],
         "requestBody": {
           "required": true,
