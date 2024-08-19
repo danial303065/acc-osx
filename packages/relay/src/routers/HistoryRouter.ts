@@ -86,7 +86,7 @@ export class HistoryRouter {
         };
     }
 
-    public registerRoutes() {
+    public async registerRoutes() {
         this.app.get(
             "/v1/token/main/history/:account",
             [

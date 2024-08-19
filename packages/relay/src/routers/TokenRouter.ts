@@ -84,7 +84,7 @@ export class TokenRouter {
         };
     }
 
-    public registerRoutes() {
+    public async registerRoutes() {
         this.app.get(
             "/v1/token/main/balance/:account",
             [param("account").exists().trim().isEthereumAddress()],

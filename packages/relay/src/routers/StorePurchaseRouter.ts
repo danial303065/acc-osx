@@ -62,7 +62,7 @@ export class StorePurchaseRouter {
         };
     }
 
-    public registerRoutes() {
+    public async registerRoutes() {
         this.app.post(
             "/v1/purchase/save",
             [

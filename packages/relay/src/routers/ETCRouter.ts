@@ -61,7 +61,7 @@ export class ETCRouter {
         };
     }
 
-    public registerRoutes() {
+    public async registerRoutes() {
         // 포인트의 종류를 선택하는 기능
         this.app.post(
             "/v1/mobile/register",

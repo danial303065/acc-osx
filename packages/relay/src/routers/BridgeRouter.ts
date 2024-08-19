@@ -81,7 +81,7 @@ export class BridgeRouter {
         };
     }
 
-    public registerRoutes() {
+    public async registerRoutes() {
         this.app.post(
             "/v1/bridge/withdraw",
             [

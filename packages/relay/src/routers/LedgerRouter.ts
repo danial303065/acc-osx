@@ -86,7 +86,7 @@ export class LedgerRouter {
         };
     }
 
-    public registerRoutes() {
+    public async registerRoutes() {
         this.app.get(
             "/v1/ledger/nonce/:account",
             [param("account").exists().trim().isEthereumAddress()],
