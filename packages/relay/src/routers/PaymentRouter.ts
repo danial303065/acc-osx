@@ -68,7 +68,7 @@ export class PaymentRouter {
         return this.web_service.app;
     }
 
-    public registerRoutes() {
+    public async registerRoutes() {
         this.app.get(
             "/v1/payment/user/balance",
             [query("account").exists().trim().isEthereumAddress()],

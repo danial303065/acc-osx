@@ -3,6 +3,8 @@ import { ContractManager } from "../contract/ContractManager";
 import { Metrics } from "../metrics/Metrics";
 import { WebService } from "../service/WebService";
 
+import { Tspec, TspecDocsMiddleware } from "tspec";
+
 import { BigNumber, Wallet } from "ethers";
 import express from "express";
 
@@ -23,11 +25,12 @@ export class DefaultRouter {
         return this.web_service.app;
     }
 
-    public registerRoutes() {
+    public async registerRoutes() {
         // Get Health Status
         this.app.get("/", [], this.getHealthStatus.bind(this));
         this.app.post("/callback", [], this.callback.bind(this));
         this.app.get("/metrics", [], this.getMetrics.bind(this));
+        this.app.use("/docs", await TspecDocsMiddleware());
     }
 
     private async getHealthStatus(req: express.Request, res: express.Response) {

@@ -80,7 +80,7 @@ export class PhoneLinkRouter {
         };
     }
 
-    public registerRoutes() {
+    public async registerRoutes() {
         this.app.get(
             "/v1/link/nonce/:account",
             [param("account").exists().trim().isEthereumAddress()],

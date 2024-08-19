@@ -84,7 +84,7 @@ export class ProviderRouter {
         };
     }
 
-    public registerRoutes() {
+    public async registerRoutes() {
         this.app.post(
             "/v1/provider/register",
             [

@@ -101,7 +101,7 @@ export class ShopRouter {
         };
     }
 
-    public registerRoutes() {
+    public async registerRoutes() {
         this.app.get(
             "/v1/shop/nonce/:account",
             [param("account").exists().trim().isEthereumAddress()],

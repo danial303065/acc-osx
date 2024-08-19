@@ -221,17 +221,17 @@ export class DefaultServer extends WebService {
             })
         );
 
-        this.defaultRouter.registerRoutes();
-        this.ledgerRouter.registerRoutes();
-        this.shopRouter.registerRoutes();
-        this.paymentRouter.registerRoutes();
-        this.etcRouter.registerRoutes();
-        this.purchaseRouter.registerRoutes();
-        this.tokenRouter.registerRoutes();
-        this.phoneLinkRouter.registerRoutes();
-        this.providerRouter.registerRoutes();
-        this.bridgeRouter.registerRoutes();
-        this.historyRouter.registerRoutes();
+        await this.defaultRouter.registerRoutes();
+        await this.ledgerRouter.registerRoutes();
+        await this.shopRouter.registerRoutes();
+        await this.paymentRouter.registerRoutes();
+        await this.etcRouter.registerRoutes();
+        await this.purchaseRouter.registerRoutes();
+        await this.tokenRouter.registerRoutes();
+        await this.phoneLinkRouter.registerRoutes();
+        await this.providerRouter.registerRoutes();
+        await this.bridgeRouter.registerRoutes();
+        await this.historyRouter.registerRoutes();
 
         for (const m of this.schedules) await m.start();
 
