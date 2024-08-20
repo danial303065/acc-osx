@@ -160,16 +160,11 @@ export class StorePurchaseRouter {
                     shopProvidedAmount: BigNumber.from(0),
                 };
 
-                let loyaltyPoint: BigNumber;
-                if (purchaseData.currency === "krw") {
-                    loyaltyPoint = loyaltyValue;
-                } else {
-                    loyaltyPoint = await this.contractManager.sideCurrencyRateContract.convertCurrency(
-                        loyaltyValue,
-                        purchaseData.currency,
-                        "point"
-                    );
-                }
+                const loyaltyPoint = await this.contractManager.sideCurrencyRateContract.convertCurrency(
+                    loyaltyValue,
+                    purchaseData.currency,
+                    "point"
+                );
                 if (purchaseData.account === AddressZero && phone.toLowerCase() !== PHONE_NULL) {
                     purchaseData.account = await this.contractManager.sidePhoneLinkerContract.toAddress(phone);
                 }
