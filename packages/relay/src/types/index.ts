@@ -88,6 +88,8 @@ export interface LoyaltyPaymentTaskData {
     totalPoint: BigNumber;
     totalValue: BigNumber;
 
+    terminalId: string;
+
     paymentStatus: LoyaltyPaymentTaskStatus;
     contractStatus: ContractLoyaltyPaymentStatus;
 
@@ -131,6 +133,7 @@ export interface PaymentResultData {
     feeValue: string;
     totalPoint: string;
     totalValue: string;
+    terminalId: string;
     balance?: string;
     paymentStatus?: LoyaltyPaymentTaskStatus;
     openNewTimestamp?: number;
@@ -158,6 +161,7 @@ export interface ShopTaskData {
     currency: string;
     status: ContractShopStatus;
     account: string;
+    terminalId: string;
     taskStatus: ShopTaskStatus;
     timestamp: number;
     txId: string;

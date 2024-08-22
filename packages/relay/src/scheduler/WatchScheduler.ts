@@ -217,6 +217,7 @@ export class WatchScheduler extends Scheduler {
             feeValue: item.feeValue.toString(),
             totalPoint: item.totalPoint.toString(),
             totalValue: item.totalValue.toString(),
+            terminalId: item.terminalId,
             paymentStatus: item.paymentStatus,
         };
     }
@@ -474,6 +475,7 @@ export class WatchScheduler extends Scheduler {
             currency: item.currency,
             status: item.status,
             account: item.account,
+            terminalId: item.terminalId,
         };
     }
     /// endregion

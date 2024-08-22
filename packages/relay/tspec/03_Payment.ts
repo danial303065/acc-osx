@@ -173,6 +173,11 @@ export type PaymentApiSpec = Tspec.DefineApiSpec<{
                      * @example "0x5A3Fc8990417b3e6ddCdAE0E8039E798A609Ef84"
                      */
                     account: string;
+                    /**
+                     * ID of terminal
+                     * @example "KIOSK0001"
+                     */
+                    terminalId?: string;
                 };
                 responses: {
                     200: {
@@ -242,6 +247,11 @@ export type PaymentApiSpec = Tspec.DefineApiSpec<{
                              * @example "105000000000000000000"
                              */
                             totalValue: string;
+                            /**
+                             * ID of terminal
+                             * @example "KIOSK0001"
+                             */
+                            terminalId: string;
                             /**
                              * Progress status of payment task
                              * @example 18
@@ -343,6 +353,11 @@ export type PaymentApiSpec = Tspec.DefineApiSpec<{
                              */
                             totalValue: string;
                             /**
+                             * ID of terminal
+                             * @example "KIOSK0001"
+                             */
+                            terminalId: string;
+                            /**
                              * Progress status of payment task
                              * @example 18
                              */
@@ -417,6 +432,11 @@ export type PaymentApiSpec = Tspec.DefineApiSpec<{
                              * @example "0x5A3Fc8990417b3e6ddCdAE0E8039E798A609Ef84"
                              */
                             account: string;
+                            /**
+                             * ID of terminal
+                             * @example "KIOSK0001"
+                             */
+                            terminalId: string;
                             /**
                              * Progress status of payment task
                              * @example 18
@@ -513,6 +533,11 @@ export type PaymentApiSpec = Tspec.DefineApiSpec<{
                              */
                             totalValue: string;
                             /**
+                             * ID of terminal
+                             * @example "KIOSK0001"
+                             */
+                            terminalId: string;
+                            /**
                              * Progress status of payment task
                              * @example 18
                              */
@@ -538,6 +563,11 @@ export type PaymentApiSpec = Tspec.DefineApiSpec<{
                      * @example "0x2d9100c28be32e1a29e55b2ead66d472a6271627235778379657d08c9dc1d901"
                      */
                     paymentId: string;
+                    /**
+                     * ID of terminal
+                     * @example "KIOSK0001"
+                     */
+                    terminalId?: string;
                 };
                 responses: {
                     200: {
@@ -607,6 +637,11 @@ export type PaymentApiSpec = Tspec.DefineApiSpec<{
                              * @example "105000000000000000000"
                              */
                             totalValue: string;
+                            /**
+                             * ID of terminal
+                             * @example "KIOSK0001"
+                             */
+                            terminalId: string;
                             /**
                              * Progress status of payment task
                              * @example 18
@@ -708,6 +743,11 @@ export type PaymentApiSpec = Tspec.DefineApiSpec<{
                              */
                             totalValue: string;
                             /**
+                             * ID of terminal
+                             * @example "KIOSK0001"
+                             */
+                            terminalId: string;
+                            /**
                              * Progress status of payment task
                              * @example 18
                              */
@@ -782,6 +822,11 @@ export type PaymentApiSpec = Tspec.DefineApiSpec<{
                              * @example "0x5A3Fc8990417b3e6ddCdAE0E8039E798A609Ef84"
                              */
                             account: string;
+                            /**
+                             * ID of terminal
+                             * @example "KIOSK0001"
+                             */
+                            terminalId: string;
                             /**
                              * Progress status of payment task
                              * @example 18

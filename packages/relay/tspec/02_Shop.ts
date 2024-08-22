@@ -67,6 +67,11 @@ export type ShopApiSpec = Tspec.DefineApiSpec<{
                              * @example "0"
                              */
                             refundedAmount: string;
+                            /**
+                             * ID of terminal
+                             * @example "KIOSK0001"
+                             */
+                            terminalId: string;
                         };
                         error?: {
                             /**
@@ -142,6 +147,11 @@ export type ShopApiSpec = Tspec.DefineApiSpec<{
                              * @example "0"
                              */
                             refundedAmount: string;
+                            /**
+                             * ID of terminal
+                             * @example "KIOSK0001"
+                             */
+                            terminalId: string;
                         }[];
                         error?: {
                             /**
@@ -255,6 +265,11 @@ export type ShopApiSpec = Tspec.DefineApiSpec<{
                      * @example "php"
                      */
                     currency: string;
+                    /**
+                     * ID of terminal
+                     * @example "KIOSK0001"
+                     */
+                    terminalId?: string;
                 };
                 responses: {
                     200: {
@@ -284,6 +299,11 @@ export type ShopApiSpec = Tspec.DefineApiSpec<{
                              * @example "php"
                              */
                             currency: string;
+                            /**
+                             * ID of terminal
+                             * @example "KIOSK0001"
+                             */
+                            terminalId: string;
                             /**
                              * Task progress status ( 11: OPENED, 12: FAILED_TX, 13: REVERTED_TX, 14: SENT_TX, 15: DENIED, 16: COMPLETED )
                              * @example 11
@@ -395,6 +415,11 @@ export type ShopApiSpec = Tspec.DefineApiSpec<{
                      * @example 1
                      */
                     status: string;
+                    /**
+                     * ID of terminal
+                     * @example "KIOSK0001"
+                     */
+                    terminalId?: string;
                 };
                 responses: {
                     200: {
@@ -419,6 +444,11 @@ export type ShopApiSpec = Tspec.DefineApiSpec<{
                              * @example 1
                              */
                             status: number;
+                            /**
+                             * ID of terminal
+                             * @example "KIOSK0001"
+                             */
+                            terminalId: string;
                             /**
                              * Task progress status ( 11: OPENED, 12: FAILED_TX, 13: REVERTED_TX, 14: SENT_TX, 15: DENIED, 16: COMPLETED )
                              * @example 11
@@ -484,6 +514,11 @@ export type ShopApiSpec = Tspec.DefineApiSpec<{
                              * @example 1
                              */
                             status: number;
+                            /**
+                             * ID of terminal
+                             * @example "KIOSK0001"
+                             */
+                            terminalId: string;
                             /**
                              * Task progress status ( 11: OPENED, 12: FAILED_TX, 13: REVERTED_TX, 14: SENT_TX, 15: DENIED, 16: COMPLETED )
                              * @example 11
@@ -559,6 +594,11 @@ export type ShopApiSpec = Tspec.DefineApiSpec<{
                              * @example 1
                              */
                             status: number;
+                            /**
+                             * ID of terminal
+                             * @example "KIOSK0001"
+                             */
+                            terminalId: string;
                             /**
                              * Task progress status ( 11: OPENED, 12: FAILED_TX, 13: REVERTED_TX, 14: SENT_TX, 15: DENIED, 16: COMPLETED )
                              * @example 11

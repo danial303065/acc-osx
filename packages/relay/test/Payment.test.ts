@@ -369,6 +369,7 @@ describe("Test of Server", function () {
                     currency: "krw",
                     shopId: shopData[purchaseOfLoyalty.shopIndex].shopId,
                     account: users[purchaseOfLoyalty.userIndex].address,
+                    terminalId: "TM000001",
                 };
                 const response = await client.post(url, params);
 
@@ -469,6 +470,7 @@ describe("Test of Server", function () {
                     currency: "krw",
                     shopId: shopData[purchaseOfLoyalty.shopIndex].shopId,
                     account: users[purchaseOfLoyalty.userIndex].address,
+                    terminalId: "TM000001",
                 };
                 const response = await client.post(url, params);
 
@@ -848,6 +850,7 @@ describe("Test of Server", function () {
                     currency: "krw",
                     shopId: shopData[purchaseOfLoyalty.shopIndex].shopId,
                     account: users[purchaseOfLoyalty.userIndex].address,
+                    terminalId: "TM000001",
                 };
                 const response = await client.post(url, params);
 
@@ -938,6 +941,7 @@ describe("Test of Server", function () {
 
                 const params = {
                     paymentId,
+                    terminalId: "TM000001",
                 };
                 const response = await client.post(url, params);
 
@@ -1254,6 +1258,7 @@ describe("Test of Server", function () {
                     currency: "krw",
                     shopId: shopData[purchaseOfLoyalty.shopIndex].shopId,
                     account: users[purchaseOfLoyalty.userIndex].address,
+                    terminalId: "TM000001",
                 };
                 const response = await client.post(url, params);
 
@@ -1344,6 +1349,7 @@ describe("Test of Server", function () {
 
                 const params = {
                     paymentId,
+                    terminalId: "TM000001",
                 };
                 const response = await client.post(url, params);
 
@@ -1721,6 +1727,7 @@ describe("Test of Server", function () {
                 currency: "krw",
                 shopId: shopData[purchaseOfLoyalty.shopIndex].shopId,
                 account: users[purchaseOfLoyalty.userIndex].address,
+                terminalId: "TM000001",
             };
             const response = await client.post(url, params);
 
@@ -1772,6 +1779,7 @@ describe("Test of Server", function () {
 
             const params = {
                 paymentId,
+                terminalId: "TM000001",
             };
             const response = await client.post(url, params);
 
