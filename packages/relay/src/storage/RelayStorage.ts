@@ -76,6 +76,7 @@ export class RelayStorage extends Storage {
                 feeValue: item.feeValue.toString(),
                 totalPoint: item.totalPoint.toString(),
                 totalValue: item.totalValue.toString(),
+                terminalId: item.terminalId,
                 paymentStatus: item.paymentStatus,
                 openNewTimestamp: item.openNewTimestamp,
                 closeNewTimestamp: item.closeNewTimestamp,
@@ -117,6 +118,7 @@ export class RelayStorage extends Storage {
                             feeValue: BigNumber.from(m.feeValue),
                             totalPoint: BigNumber.from(m.totalPoint),
                             totalValue: BigNumber.from(m.totalValue),
+                            terminalId: m.terminalId,
                             paymentStatus: m.paymentStatus,
                             contractStatus: m.contractStatus,
                             openNewTimestamp: m.openNewTimestamp,
@@ -155,6 +157,22 @@ export class RelayStorage extends Storage {
                 closeNewTimestamp: item.closeNewTimestamp,
                 openCancelTimestamp: item.openCancelTimestamp,
                 closeCancelTimestamp: item.closeCancelTimestamp,
+            })
+                .then(() => {
+                    return resolve();
+                })
+                .catch((reason) => {
+                    if (reason instanceof Error) return reject(reason);
+                    return reject(new Error(reason));
+                });
+        });
+    }
+
+    public updateTerminalId(paymentId: string, terminalId: string): Promise<any> {
+        return new Promise<void>(async (resolve, reject) => {
+            this.queryForMapper("payment", "updateTerminal", {
+                paymentId,
+                terminalId,
             })
                 .then(() => {
                     return resolve();
@@ -407,6 +425,7 @@ export class RelayStorage extends Storage {
                                 feeValue: BigNumber.from(m.feeValue),
                                 totalPoint: BigNumber.from(m.totalPoint),
                                 totalValue: BigNumber.from(m.totalValue),
+                                terminalId: m.terminalId,
                                 paymentStatus: m.paymentStatus,
                                 contractStatus: m.contractStatus,
                                 openNewTimestamp: m.openNewTimestamp,
@@ -452,6 +471,7 @@ export class RelayStorage extends Storage {
                                 feeValue: BigNumber.from(m.feeValue),
                                 totalPoint: BigNumber.from(m.totalPoint),
                                 totalValue: BigNumber.from(m.totalValue),
+                                terminalId: m.terminalId,
                                 paymentStatus: m.paymentStatus,
                                 contractStatus: m.contractStatus,
                                 openNewTimestamp: m.openNewTimestamp,
@@ -487,6 +507,7 @@ export class RelayStorage extends Storage {
                 currency: item.currency,
                 name: item.name,
                 status: item.status,
+                terminalId: item.terminalId,
                 taskStatus: item.taskStatus,
                 timestamp: item.timestamp,
             })
@@ -514,6 +535,7 @@ export class RelayStorage extends Storage {
                             name: m.name,
                             currency: m.currency,
                             status: m.status,
+                            terminalId: m.terminalId,
                             taskStatus: m.taskStatus,
                             timestamp: m.timestamp,
                             txId: m.txId,
@@ -596,6 +618,7 @@ export class RelayStorage extends Storage {
                                 name: m.name,
                                 currency: m.currency,
                                 status: m.status,
+                                terminalId: m.terminalId,
                                 taskStatus: m.taskStatus,
                                 timestamp: m.timestamp,
                                 txId: m.txId,

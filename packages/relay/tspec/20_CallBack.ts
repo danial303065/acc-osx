@@ -63,6 +63,11 @@ interface PaymentCallBackData {
      */
     totalValue: string;
     /**
+     * ID of terminal
+     * @example "KIOSK0001"
+     */
+    terminalId: string;
+    /**
      * Progress status of payment task
      * @example 18
      */
@@ -100,6 +105,11 @@ interface ShopCallBackData {
      * @example "0xafFe745418Ad24c272175e5B58610A8a35e2EcDa"
      */
     account: string;
+    /**
+     * ID of terminal
+     * @example "KIOSK0001"
+     */
+    terminalId: string;
 }
 
 interface TaskCallBackRequest {

@@ -380,7 +380,13 @@ export type SideChainTokenApiSpec = Tspec.DefineApiSpec<{
         "/v1/token/side/balance/{account}": {
             get: {
                 summary: "Provide token balance in the side chain";
-                path: { account: string };
+                path: {
+                    /**
+                     * Address of user wallet
+                     * @example "0x5650CD3E6E8963B43D21FAE60EE7A03BCEFCE766"
+                     */
+                    account: string;
+                };
                 responses: {
                     200: {
                         /**
@@ -414,7 +420,13 @@ export type SideChainTokenApiSpec = Tspec.DefineApiSpec<{
         "/v1/token/side/nonce/{account}": {
             get: {
                 summary: "Provide nonce in the side chain";
-                path: { account: string };
+                path: {
+                    /**
+                     * Address of user wallet
+                     * @example "0x5650CD3E6E8963B43D21FAE60EE7A03BCEFCE766"
+                     */
+                    account: string;
+                };
                 responses: {
                     200: {
                         /**
