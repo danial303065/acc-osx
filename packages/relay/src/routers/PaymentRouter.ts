@@ -463,6 +463,7 @@ export class PaymentRouter {
             const purchaseId: string = String(req.body.purchaseId).trim();
             const amount: BigNumber = BigNumber.from(req.body.amount);
             const currency: string = String(req.body.currency).trim();
+            const terminalId: string = req.body.terminalId !== undefined ? String(req.body.terminalId).trim() : "";
 
             const feeRate = await this.contractManager.sideLedgerContract.getPaymentFee();
             const rate = await this.contractManager.sideCurrencyRateContract.get(currency.toLowerCase());
@@ -505,6 +506,7 @@ export class PaymentRouter {
                 feeValue,
                 totalPoint,
                 totalValue,
+                terminalId,
                 paymentStatus: LoyaltyPaymentTaskStatus.OPENED_NEW,
                 contractStatus: ContractLoyaltyPaymentStatus.INVALID,
                 openNewTimestamp: ContractUtils.getTimeStamp(),
@@ -739,6 +741,7 @@ export class PaymentRouter {
                                 currency: item.currency,
                                 shopId: item.shopId,
                                 account: item.account,
+                                terminalId: item.terminalId,
                                 paymentStatus: item.paymentStatus,
                             })
                         );
@@ -810,6 +813,7 @@ export class PaymentRouter {
                                 feeValue: item.feeValue.toString(),
                                 totalPoint: item.totalPoint.toString(),
                                 totalValue: item.totalValue.toString(),
+                                terminalId: item.terminalId,
                                 paymentStatus: item.paymentStatus,
                                 openNewTimestamp: item.openNewTimestamp,
                                 closeNewTimestamp: item.closeNewTimestamp,
@@ -848,6 +852,7 @@ export class PaymentRouter {
                                     feeValue: item.feeValue.toString(),
                                     totalPoint: item.totalPoint.toString(),
                                     totalValue: item.totalValue.toString(),
+                                    terminalId: item.terminalId,
                                     paymentStatus: item.paymentStatus,
                                     openNewTimestamp: item.openNewTimestamp,
                                     closeNewTimestamp: item.closeNewTimestamp,
@@ -903,6 +908,7 @@ export class PaymentRouter {
                                     feeValue: item.feeValue.toString(),
                                     totalPoint: item.totalPoint.toString(),
                                     totalValue: item.totalValue.toString(),
+                                    terminalId: item.terminalId,
                                     paymentStatus: item.paymentStatus,
                                     openNewTimestamp: item.openNewTimestamp,
                                     closeNewTimestamp: item.closeNewTimestamp,
@@ -998,6 +1004,7 @@ export class PaymentRouter {
                     feeValue: item.feeValue.toString(),
                     totalPoint: item.totalPoint.toString(),
                     totalValue: item.totalValue.toString(),
+                    terminalId: item.terminalId,
                     paymentStatus: item.paymentStatus,
                     openNewTimestamp: item.openNewTimestamp,
                     closeNewTimestamp: item.closeNewTimestamp,
@@ -1034,6 +1041,7 @@ export class PaymentRouter {
             }
 
             const paymentId: string = String(req.body.paymentId).trim();
+            const terminalId: string = req.body.terminalId !== undefined ? String(req.body.terminalId).trim() : "";
             const item = await this.storage.getPayment(paymentId);
             if (item === undefined) {
                 return res.status(200).json(ResponseMessage.getErrorMessage("2003"));
@@ -1047,6 +1055,9 @@ export class PaymentRouter {
                 ) {
                     return res.status(200).json(ResponseMessage.getErrorMessage("2022"));
                 }
+
+                item.terminalId = terminalId;
+                await this.storage.updateTerminalId(item.paymentId, item.terminalId);
 
                 item.paymentStatus = LoyaltyPaymentTaskStatus.OPENED_CANCEL;
                 item.openCancelTimestamp = ContractUtils.getTimeStamp();
@@ -1085,6 +1096,7 @@ export class PaymentRouter {
                             feeValue: item.feeValue.toString(),
                             totalPoint: item.totalPoint.toString(),
                             totalValue: item.totalValue.toString(),
+                            terminalId: item.terminalId,
                             paymentStatus: item.paymentStatus,
                             openNewTimestamp: item.openNewTimestamp,
                             closeNewTimestamp: item.closeNewTimestamp,
@@ -1151,6 +1163,7 @@ export class PaymentRouter {
                         feeValue: item.feeValue.toString(),
                         totalPoint: item.totalPoint.toString(),
                         totalValue: item.totalValue.toString(),
+                        terminalId: item.terminalId,
                         paymentStatus: item.paymentStatus,
                         openNewTimestamp: item.openNewTimestamp,
                         closeNewTimestamp: item.closeNewTimestamp,
@@ -1278,6 +1291,7 @@ export class PaymentRouter {
                                     currency: item.currency,
                                     shopId: item.shopId,
                                     account: item.account,
+                                    terminalId: item.terminalId,
                                     paymentStatus: item.paymentStatus,
                                     txHash: tx.hash,
                                 })
@@ -1325,6 +1339,7 @@ export class PaymentRouter {
                                 currency: item.currency,
                                 shopId: item.shopId,
                                 account: item.account,
+                                terminalId: item.terminalId,
                                 paymentStatus: item.paymentStatus,
                             })
                         );
@@ -1397,6 +1412,7 @@ export class PaymentRouter {
                                 feeValue: item.feeValue.toString(),
                                 totalPoint: item.totalPoint.toString(),
                                 totalValue: item.totalValue.toString(),
+                                terminalId: item.terminalId,
                                 paymentStatus: item.paymentStatus,
                                 openNewTimestamp: item.openNewTimestamp,
                                 closeNewTimestamp: item.closeNewTimestamp,
@@ -1435,6 +1451,7 @@ export class PaymentRouter {
                                     feeValue: item.feeValue.toString(),
                                     totalPoint: item.totalPoint.toString(),
                                     totalValue: item.totalValue.toString(),
+                                    terminalId: item.terminalId,
                                     paymentStatus: item.paymentStatus,
                                     openNewTimestamp: item.openNewTimestamp,
                                     closeNewTimestamp: item.closeNewTimestamp,
@@ -1490,6 +1507,7 @@ export class PaymentRouter {
                                     feeValue: item.feeValue.toString(),
                                     totalPoint: item.totalPoint.toString(),
                                     totalValue: item.totalValue.toString(),
+                                    terminalId: item.terminalId,
                                     paymentStatus: item.paymentStatus,
                                     openNewTimestamp: item.openNewTimestamp,
                                     closeNewTimestamp: item.closeNewTimestamp,
@@ -1566,6 +1584,7 @@ export class PaymentRouter {
             feeValue: item.feeValue.toString(),
             totalPoint: item.totalPoint.toString(),
             totalValue: item.totalValue.toString(),
+            terminalId: item.terminalId,
             paymentStatus: item.paymentStatus,
         };
     }

@@ -19,6 +19,7 @@
             "feeValue"              ,
             "totalPoint"            ,
             "totalValue"            ,
+            "terminalId"            ,
             "paymentStatus"         ,
             "openNewTimestamp"      ,
             "closeNewTimestamp"     ,
@@ -41,6 +42,7 @@
                 #{feeValue}            ,
                 #{totalPoint}          ,
                 #{totalValue}          ,
+                #{terminalId}          ,
                 ${paymentStatus}       ,
                 ${openNewTimestamp}    ,
                 ${closeNewTimestamp}   ,
@@ -78,6 +80,13 @@
             "openCancelTimestamp"   = ${openCancelTimestamp},
             "closeCancelTimestamp"  = ${closeCancelTimestamp}
         WHERE "paymentId" = #{paymentId} AND "paymentStatus" <![CDATA[<]]> ${paymentStatus}
+    </update>
+
+    <update id="updateTerminal">
+        UPDATE payments
+        SET
+            "terminalId" = #{terminalId}
+        WHERE "paymentId" = #{paymentId}
     </update>
 
     <update id="updateStatus">

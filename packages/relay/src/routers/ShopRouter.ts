@@ -438,6 +438,7 @@ export class ShopRouter {
             const currency: string = String(req.body.currency).trim().toLowerCase();
             const account: string = String(req.body.account).trim();
             const signature: string = String(req.body.signature).trim(); // 서명
+            const terminalId: string = req.body.terminalId !== undefined ? String(req.body.terminalId).trim() : "";
 
             const taskId = ContractUtils.getTaskId(shopId);
             const item: ShopTaskData = {
@@ -448,6 +449,7 @@ export class ShopRouter {
                 currency,
                 status: ContractShopStatus.INVALID,
                 account,
+                terminalId,
                 taskStatus: ShopTaskStatus.OPENED,
                 timestamp: ContractUtils.getTimeStamp(),
                 txId: "",
@@ -532,6 +534,7 @@ export class ShopRouter {
                     name: item.name,
                     currency: item.currency,
                     status: item.status,
+                    terminalId: item.terminalId,
                     taskStatus: item.taskStatus,
                     account: item.account,
                     timestamp: item.timestamp,
@@ -572,6 +575,7 @@ export class ShopRouter {
 
             const name: string = String(req.body.name).trim();
             const currency: string = String(req.body.currency).trim().toLowerCase();
+            const terminalId: string = req.body.terminalId !== undefined ? String(req.body.terminalId).trim() : "";
 
             const shopInfo = await this.contractManager.sideShopContract.shopOf(shopId);
             if (shopInfo.status !== ContractShopStatus.INVALID) {
@@ -585,6 +589,7 @@ export class ShopRouter {
                     currency,
                     status: shopInfo.status,
                     account: shopInfo.account,
+                    terminalId,
                     taskStatus: ShopTaskStatus.OPENED,
                     timestamp: ContractUtils.getTimeStamp(),
                     txId: "",
@@ -655,6 +660,7 @@ export class ShopRouter {
                         shopId: item.shopId,
                         name: item.name,
                         currency: item.currency,
+                        terminalId: item.terminalId,
                         taskStatus: item.taskStatus,
                         timestamp: item.timestamp,
                     })
@@ -769,6 +775,7 @@ export class ShopRouter {
                                 shopId: item.shopId,
                                 name: item.name,
                                 currency: item.currency,
+                                terminalId: item.terminalId,
                                 taskStatus: item.taskStatus,
                                 timestamp: item.timestamp,
                                 txHash: item.txId,
@@ -844,6 +851,7 @@ export class ShopRouter {
             }
 
             const status: number = Number(String(req.body.status).trim());
+            const terminalId: string = req.body.terminalId !== undefined ? String(req.body.terminalId).trim() : "";
             const shopInfo = await this.contractManager.sideShopContract.shopOf(shopId);
             if (shopInfo.status !== 0) {
                 const taskId = ContractUtils.getTaskId(shopId);
@@ -856,6 +864,7 @@ export class ShopRouter {
                     currency: shopInfo.currency,
                     status,
                     account: shopInfo.account,
+                    terminalId,
                     taskStatus: ShopTaskStatus.OPENED,
                     timestamp: ContractUtils.getTimeStamp(),
                     txId: "",
@@ -878,6 +887,7 @@ export class ShopRouter {
                             taskId: item.taskId,
                             shopId: item.shopId,
                             status: item.status,
+                            terminalId: item.terminalId,
                             taskStatus: item.taskStatus,
                             timestamp: item.timestamp,
                         })
@@ -928,6 +938,7 @@ export class ShopRouter {
                         taskId: item.taskId,
                         shopId: item.shopId,
                         status: item.status,
+                        terminalId: item.terminalId,
                         taskStatus: item.taskStatus,
                         timestamp: item.timestamp,
                     })
@@ -1042,6 +1053,7 @@ export class ShopRouter {
                                 taskId: item.taskId,
                                 shopId: item.shopId,
                                 status: item.status,
+                                terminalId: item.terminalId,
                                 taskStatus: item.taskStatus,
                                 timestamp: item.timestamp,
                                 txHash: item.txId,
@@ -1073,6 +1085,7 @@ export class ShopRouter {
                             taskId: item.taskId,
                             shopId: item.shopId,
                             status: item.status,
+                            terminalId: item.terminalId,
                             taskStatus: item.taskStatus,
                             timestamp: item.timestamp,
                         })
@@ -1146,6 +1159,7 @@ export class ShopRouter {
             currency: item.currency,
             status: item.status,
             account: item.account,
+            terminalId: item.terminalId,
         };
     }
 
