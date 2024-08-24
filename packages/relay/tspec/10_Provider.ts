@@ -6,10 +6,10 @@ export type ProviderApiSpec = Tspec.DefineApiSpec<{
     paths: {
         "/v1/provider/assistant/{provider}": {
             get: {
-                summary: "Provides the assistant's information";
+                summary: "Provides information of the transfer delegator ";
                 path: {
                     /**
-                     * Wallet address of the provider
+                     * Wallet address of the point provider
                      * @example "0x5650CD3E6E8963B43D21FAE60EE7A03BCEFCE766"
                      */
                     provider: string;
@@ -23,12 +23,12 @@ export type ProviderApiSpec = Tspec.DefineApiSpec<{
                         code: ResultCode;
                         data: {
                             /**
-                             * Wallet address of the provider
+                             * Wallet address of the point provider
                              * @example "0x5650CD3E6E8963B43D21FAE60EE7A03BCEFCE766"
                              */
                             provider: string;
                             /**
-                             * Wallet address of the assistant
+                             * Wallet address of the transfer delegator
                              * @example "0x3FE8D00143bd0eAd2397D48ba0E31E5E1268dBfb"
                              */
                             assistant: string;
@@ -51,20 +51,20 @@ export type ProviderApiSpec = Tspec.DefineApiSpec<{
         };
         "/v1/provider/assistant/register": {
             post: {
-                summary: "Register the provider's assistant. The assistant can only process the instructions of the point transfer";
+                summary: "Register the transfer delegator. The transfer delegator can only process the instructions of the point transfer";
                 body: {
                     /**
-                     * Wallet address of the provider
+                     * Wallet address of the point provider
                      * @example "0x5650CD3E6E8963B43D21FAE60EE7A03BCEFCE766"
                      */
                     provider: string;
                     /**
-                     * Wallet address of the assistant
+                     * Wallet address of the transfer delegator
                      * @example "0x3FE8D00143bd0eAd2397D48ba0E31E5E1268dBfb"
                      */
                     assistant: string;
                     /**
-                     * Signature of provider or assistant
+                     * Signature of point provider
                      * @example "0x020d671b80fbd20466d8cb65cef79a24e3bca3fdf82e9dd89d78e7a4c4c045bd72944c20bb1d839e76ee6bb69fed61f64376c37799598b40b8c49148f3cdd88a1b"
                      */
                     signature: string;
@@ -78,12 +78,12 @@ export type ProviderApiSpec = Tspec.DefineApiSpec<{
                         code: ResultCode;
                         data: {
                             /**
-                             * Wallet address of the provider
+                             * Wallet address of the point provider
                              * @example "0x5650CD3E6E8963B43D21FAE60EE7A03BCEFCE766"
                              */
                             provider: string;
                             /**
-                             * Wallet address of the assistant
+                             * Wallet address of the transfer delegator
                              * @example "0x3FE8D00143bd0eAd2397D48ba0E31E5E1268dBfb"
                              */
                             assistant: string;
@@ -104,7 +104,7 @@ export type ProviderApiSpec = Tspec.DefineApiSpec<{
                 summary: "Provide a point provider's assets";
                 path: {
                     /**
-                     * Wallet address of the provider
+                     * Wallet address of the point provider
                      * @example "0x5650CD3E6E8963B43D21FAE60EE7A03BCEFCE766"
                      */
                     provider: string;
@@ -118,7 +118,7 @@ export type ProviderApiSpec = Tspec.DefineApiSpec<{
                         code: ResultCode;
                         data: {
                             /**
-                             * Wallet address of the provider
+                             * Wallet address of the point provider
                              * @example "0x5650CD3E6E8963B43D21FAE60EE7A03BCEFCE766"
                              */
                             provider: string;
@@ -151,7 +151,7 @@ export type ProviderApiSpec = Tspec.DefineApiSpec<{
                 summary: "Register the provider. To become a point provider, you must first deposit 50,000 tokens";
                 body: {
                     /**
-                     * Wallet address of the provider
+                     * Wallet address of the point provider
                      * @example "0x5650CD3E6E8963B43D21FAE60EE7A03BCEFCE766"
                      */
                     provider: string;
@@ -170,7 +170,7 @@ export type ProviderApiSpec = Tspec.DefineApiSpec<{
                         code: ResultCode;
                         data: {
                             /**
-                             * Wallet address of the provider
+                             * Wallet address of the point provider
                              * @example "0x5650CD3E6E8963B43D21FAE60EE7A03BCEFCE766"
                              */
                             provider: string;
@@ -191,7 +191,7 @@ export type ProviderApiSpec = Tspec.DefineApiSpec<{
                 summary: "Request the ability to provide points to the recipient's wallet address";
                 body: {
                     /**
-                     * Wallet address of the provider
+                     * Wallet address of the point provider
                      * @example "0x5650CD3E6E8963B43D21FAE60EE7A03BCEFCE766"
                      */
                     provider: string;
@@ -206,7 +206,7 @@ export type ProviderApiSpec = Tspec.DefineApiSpec<{
                      */
                     amount: string;
                     /**
-                     * Signature of provider or assistant
+                     * Signature of provider or transfer delegator
                      * @example "0x020d671b80fbd20466d8cb65cef79a24e3bca3fdf82e9dd89d78e7a4c4c045bd72944c20bb1d839e76ee6bb69fed61f64376c37799598b40b8c49148f3cdd88a1b"
                      */
                     signature: string;
@@ -220,7 +220,7 @@ export type ProviderApiSpec = Tspec.DefineApiSpec<{
                         code: ResultCode;
                         data: {
                             /**
-                             * Wallet address of the provider
+                             * Wallet address of the point provider
                              * @example "0x5650CD3E6E8963B43D21FAE60EE7A03BCEFCE766"
                              */
                             provider: string;
@@ -256,7 +256,7 @@ export type ProviderApiSpec = Tspec.DefineApiSpec<{
                 summary: "Request the ability to provide points to the recipient's phone number hash";
                 body: {
                     /**
-                     * Wallet address of the provider
+                     * Wallet address of the point provider
                      * @example "0x5650CD3E6E8963B43D21FAE60EE7A03BCEFCE766"
                      */
                     provider: string;
@@ -271,7 +271,7 @@ export type ProviderApiSpec = Tspec.DefineApiSpec<{
                      */
                     amount: string;
                     /**
-                     * Signature of provider or assistant
+                     * Signature of provider or transfer delegator
                      * @example "0x020d671b80fbd20466d8cb65cef79a24e3bca3fdf82e9dd89d78e7a4c4c045bd72944c20bb1d839e76ee6bb69fed61f64376c37799598b40b8c49148f3cdd88a1b"
                      */
                     signature: string;
@@ -285,7 +285,7 @@ export type ProviderApiSpec = Tspec.DefineApiSpec<{
                         code: ResultCode;
                         data: {
                             /**
-                             * Wallet address of the provider
+                             * Wallet address of the point provider
                              * @example "0x5650CD3E6E8963B43D21FAE60EE7A03BCEFCE766"
                              */
                             provider: string;
@@ -321,7 +321,7 @@ export type ProviderApiSpec = Tspec.DefineApiSpec<{
                 summary: "Provides the status value of the point provider";
                 path: {
                     /**
-                     * Wallet address of the provider
+                     * Wallet address of the point provider
                      * @example "0x5650CD3E6E8963B43D21FAE60EE7A03BCEFCE766"
                      */
                     provider: string;
@@ -335,7 +335,7 @@ export type ProviderApiSpec = Tspec.DefineApiSpec<{
                         code: ResultCode;
                         data: {
                             /**
-                             * Wallet address of the provider
+                             * Wallet address of the point provider
                              * @example "0x5650CD3E6E8963B43D21FAE60EE7A03BCEFCE766"
                              */
                             provider: string;
